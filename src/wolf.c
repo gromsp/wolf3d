@@ -6,14 +6,15 @@ void	draw(t_img *img, double x, double y, int c, int luch)
 	int i = 0;
 	int column;
 	int beg;
-	column = 512/c;
-	beg = (512 - column) / 2;
-	while(i < 512)
+	c = c / 2;
+	column = 500/c;
+	beg = (500 - column) / 2;
+	while(i < 500)
 	{
-		if ((i > beg) && (i < (512 - beg)))
-			img->addr[luch + (i * 512)] = 0xFFFFFF;
+		if ((i > beg) && (i < (500 - beg)))
+			img->addr[luch + (i * 500)] = 0xFFFFFF;
 		else
-			img->addr[luch + (i * 512)] = 0x000000;
+			img->addr[luch + (i * 500)] = 0x000000;
 		i++;
 	}
 }
@@ -24,8 +25,8 @@ int main()
 	img = (t_img *)ft_memalloc(sizeof(t_img));
 	char *s;
 	img->mlx = mlx_init();
-	img->img = mlx_new_image(img->mlx, 512, 512);
-	img->win = mlx_new_window(img->mlx, 512, 512, "42");
+	img->img = mlx_new_image(img->mlx, 500, 500);
+	img->win = mlx_new_window(img->mlx, 500, 500, "42");
 	s = mlx_get_data_addr(img->img, &(img->bts), &(img->size_line), &(img->endian));
 	img->addr = (int*)s;
 	int wmap;
@@ -34,26 +35,40 @@ int main()
 	wmap = 4;
 	hmap = 4;
 	char map[4 * 4] = "1111101111111111";
-	int wemap = 512;
+	int wemap = 500;
 	int quad;
 	quad = wemap / wmap;
 	char *m;
 	int i;
-	m = malloc(sizeof(char) * (512 * 512));
-	i = 0;
-	while (i < 512 * 512)
+	m = (char*)ft_memalloc(500 * 500);
+	int j;
+	int l;
+	int k;
+	int ryd;
+	int mesto;
+	j = 0;
+	while (j < 16)
 	{
-		if (map[i / quad] == 1)
+		l = 0;
+		if (map[j] == '1')
 		{
-			m[i] = 1;
-			printf("1");
+			l = 0;
+			ryd = (j / 4 * quad);
+			while(l < 125)
+			{
+				mesto = (j % 4 * quad);
+				k = 0;
+				while(k < 125)
+				{
+					m[mesto + (ryd * 500)] = 1;
+					k++;
+					mesto++;
+				}
+				ryd++;
+				l++;
+			}
 		}
-		else
-		{
-			m[i] = 0;
-			printf("0");
-		}
-		i++;
+		j++;
 	}
 	double px = quad + 5;
 	double py = quad + 5;
@@ -65,15 +80,16 @@ int main()
 	int luch;
 	double angle;
 	fov = 90; 
-	angle = (double)90 / (double)512;
-	while (luch < 512)
+	double PI = 3.14159265;
+	angle = (double)90 / (double)500;
+	while (luch < 500)
 	{
 		pa = pa + angle;
-		while ((x + (y * 512)) < 512 * 512)
+		while ((x + (y * 500)) < 500 * 500)
 		{
-			x = px + c * cos(pa);
-			y = py + c * sin(pa);
-			if (m[x + (y * 512)] == 1)
+			x = px + c * cos(pa * PI/180);
+			y = py + c * sin(pa * PI/180);
+			if (m[x + (y * 500)] == 1)
 			{
 				draw(img, x, y, c, luch);
 				break;
