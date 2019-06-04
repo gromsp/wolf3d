@@ -118,5 +118,5 @@ int main()
 	mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
 	mlx_put_image_to_window(img->mlx, img->winm, img->imgm, 0, 0);
 	mlx_loop(img->mlx);
-	return (0);
+	return (123);
 }
