@@ -1,7 +1,7 @@
 
 #include "../include/wolf.h"
 
-void	draw(t_img *img, double x, double y, int c, int luch, double angle, double pa, double PI)
+void	draw(t_img *img, double x, double y, double c, int luch, double angle, double pa, double PI)
 {
 	int i = 0;
 	int column;
@@ -11,9 +11,9 @@ void	draw(t_img *img, double x, double y, int c, int luch, double angle, double 
 	r = 500.0 / c;
 	// column = 500 - (((c * 3) * cos((pa - angle) * PI/180)));
 	// column = 500 - c;
-	column = 500 / c;
-	beg = 500 / c;
-	printf("%d - column, %d - beg, %d - c\n", column, beg, c);
+	column = (int)(500.0 / c);
+	beg = (500 - column) / 2;
+	// printf("%d - column, %d - beg, %d - c\n", column, beg, c);
 	while(i < 500)
 	{
 		if ((i > beg) && (i < (500 - beg)))
@@ -82,7 +82,7 @@ int main()
 		j++;
 	}
 	double px = quad + 50;
-	double py = quad + 120;
+	double py = quad + 122;
 	//img->addrm[(int)px + ((int)py * 500)] = 0xFF0000;
 	double pa = 45.0;
 	double c = 0;
@@ -118,5 +118,5 @@ int main()
 	mlx_put_image_to_window(img->mlx, img->win, img->img, 0, 0);
 	mlx_put_image_to_window(img->mlx, img->winm, img->imgm, 0, 0);
 	mlx_loop(img->mlx);
-	return (111);
+	return (121);
 }
