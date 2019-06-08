@@ -12,34 +12,34 @@
 
 # define widht	512
 # define height	512
-# define sizeb	512
+# define sizeb	32
 
-typedef struct s_img
-{
-	void    *mlx;
-	void    *win;
-	void    *img;
-	void    *imgm;
-	int     *addr;
-	int     *addrm;
-	int     bts;
-	int     size_line;
-	int     endian;
-}              t_img;
+// typedef struct s_img
+// {
+// 	void    *mlx;
+// 	void    *win;
+// 	void    *img;
+// 	void    *imgm;
+// 	int     *addr;
+// 	int     *addrm;
+// 	int     bts;
+// 	int     size_line;
+// 	int     endian;
+// }              t_img;
 
 typedef struct s_map
 {
 	int		widht_m;
 	int		height_m;
-	char	*map;
+	int		*map;
 	double	step;
 }              t_map;
 
-typedef struct s_core
-{
-	void *data;
-}              t_core;
+// typedef struct s_core
+// {
+// 	void *data;
+// }              t_core;
 
-t_map	parser(char *av);
+void	parser(char *av);
 
 #endif
