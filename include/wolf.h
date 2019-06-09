@@ -14,18 +14,25 @@
 # define height	512
 # define sizeb	32
 
-// typedef struct s_img
-// {
-// 	void    *mlx;
-// 	void    *win;
-// 	void    *img;
-// 	void    *imgm;
-// 	int     *addr;
-// 	int     *addrm;
-// 	int     bts;
-// 	int     size_line;
-// 	int     endian;
-// }              t_img;
+typedef struct s_img
+{
+	void    *mlx;
+	void    *win;
+	void    *img;
+	int     *addr;
+	int     bts;
+	int     size_line;
+	int     endian;
+}              t_img;
+
+typedef struct s_player
+{
+	double	px;
+	double	py;
+	int		pa;
+	double	rays;
+	int		fov;
+}              t_player;
 
 typedef struct s_map
 {
@@ -35,11 +42,18 @@ typedef struct s_map
 	double	step;
 }              t_map;
 
-// typedef struct s_core
-// {
-// 	void *data;
-// }              t_core;
+typedef struct s_core
+{
+	t_map	*map;
+	t_img	*img;
+	t_player *play;
+}              t_core;
 
-void	parser(char *av);
+void	raycast(t_core *core);
+int		control(int press_key, void *param);
+int		mouse_move(int x, int y, void *param);
+t_core	*initcore(t_core *core);
+void	render(t_map *map);
+t_map	*parser(char *av, t_map *map);
 
 #endif
