@@ -13,7 +13,7 @@
 
 #include "../include/wolf.h"
 
-void	draw(t_core *core, int ray, double angle, double ray_ang)
+void	draw(t_core *core, int ray, double ray_ang, double x, double y)
 {
 	int i;
 	double	column;
@@ -25,7 +25,16 @@ void	draw(t_core *core, int ray, double angle, double ray_ang)
 	while (i < height)
 	{
 		if ((i > beg) && (i < height - beg))
-			core->img->addr[ray + (i * height)] = 0xFFFFFF;
+		{
+			if (core->play->px > x && (fmod(x, 1.0) < 0.05) && (x + core->map->step == x - core->map->step))
+				core->img->addr[ray + (i * height)] = 0xFFFFFF;
+			if (checker(x, y, core->map) == 'n')
+				core->img->addr[ray + (i * height)] = 0x0000FF;
+			if (checker(x, y, core->map) == 's')
+				core->img->addr[ray + (i * height)] = 0x00FF00;
+			if (checker(x, y, core->map) == 'w')
+				core->img->addr[ray + (i * height)] = 0xFF0000;
+		}
 		else if (i > beg)
 			core->img->addr[ray + (i * height)] = 0x444444;
 		else
@@ -55,10 +64,10 @@ void	raycast(t_core *core)
 			y = core->play->py + core->play->rays * sin(ray_ang * M_PI / 180);
 			if (core->map->map[(int)x + ((int)y * core->map->height_m)] == 1)
 			{
-				draw(core, ray, angle, ray_ang);
+				draw(core, ray, ray_ang, x, y);
 				break;
 			}
-			core->play->rays += (core->map->step / 2);
+			core->play->rays += (core->map->step / 100);
 		}
 		ray++;
 	}

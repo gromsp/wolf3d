@@ -41,13 +41,17 @@ int		widhtm(char *av)
 	get_next_line(fd, &line);
 	while (line[i])
 	{
-		if (line[i - 1] == 32 && line[i] != 32)
+		if ((line[i - 1]) && line[i - 1] == 32 && line[i] != 32)
 			j++;
 		i++;
 	}
+	free(line);
 	j += 1;
 	while ((get_next_line(fd, &line)) == 1)
+	{
 		i++;
+		free(line);
+	}
 	close(fd);
 	return (j);
 }
@@ -124,6 +128,7 @@ t_map	*parser(char *av, t_map *map)
 	{
 		map->map = malloc(sizeof(int) * map->widht_m * map->widht_m);
 		size_line = map->widht_m;
+		map->height_m = map->widht_m;
 	}
 	maph(av, map, i, size_line);
 	map->step = (int)1 / (double)sizeb;

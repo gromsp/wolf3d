@@ -50,6 +50,7 @@ typedef struct s_core
 }              t_core;
 
 void	raycast(t_core *core);
+char	checker(double x, double y, t_map *map);
 int		control(int press_key, void *param);
 int		mouse_move(int x, int y, void *param);
 t_core	*initcore(t_core *core);
