@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/09 17:41:27 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/09 18:30:58 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/12 19:05:15 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,18 @@ void	arrow(int key, t_core *core)
 
 	ray_ang = (double)core->play->pa - ((double)core->play->fov / 2);
 	if (key == 124)
-		core->play->pa += 4;
+		core->play->pa += 8;
 	if (key == 123)
-		core->play->pa -= 4;
+		core->play->pa -= 8;
 	if (key == 126)
 	{
-		core->play->px += (core->map->step * cos(core->play->pa * M_PI / 180) * 5);
-		core->play->py += (core->map->step * sin(core->play->pa * M_PI / 180) * 5);
+		core->play->px += (core->map->step * 2 * cos(core->play->pa * M_PI / 180) * 5);
+		core->play->py += (core->map->step * 2 * sin(core->play->pa * M_PI / 180) * 5);
 	}
 	if (key == 125)
 	{
-		core->play->px += (core->map->step * cos((core->play->pa + 180) * M_PI / 180) * 5);
-		core->play->py += (core->map->step * sin((core->play->pa + 180) * M_PI / 180) * 5);
+		core->play->px += (core->map->step * 2 * cos((core->play->pa + 180) * M_PI / 180) * 5);
+		core->play->py += (core->map->step * 2 * sin((core->play->pa + 180) * M_PI / 180) * 5);
 	}
 	raycast(core);
 }

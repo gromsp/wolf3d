@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 16:22:57 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/08 18:14:59 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/12 16:55:20 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int		widhtm(char *av)
 		i++;
 	}
 	free(line);
-	j += 1;
 	while ((get_next_line(fd, &line)) == 1)
 	{
 		i++;
@@ -97,9 +96,9 @@ void	maph(char *av, t_map *map, int f, int size_line)
 	i = size_line;
 	j = size_line;
 	fd = open(av, O_RDONLY);
-	while (i > 0)
+	while (get_next_line(fd, &line) == 1)
 	{
-		get_next_line(fd, &line);
+		// get_next_line(fd, &line);
 		mapa(j, size_line, map, line);
 		j = j + size_line;
 		free(line);
@@ -118,23 +117,29 @@ t_map	*parser(char *av, t_map *map)
 		exit(-2);
 	map->height_m = heightm(av);
 	map->widht_m = widhtm(av);
-	if (map->height_m > map->widht_m)
-	{
-		i = 1;
-		map->map = malloc(sizeof(int) * map->height_m * map->height_m);
-		size_line = map->height_m;
-	}
-	else
-	{
-		map->map = malloc(sizeof(int) * map->widht_m * map->widht_m);
-		size_line = map->widht_m;
-		map->height_m = map->widht_m;
-	}
+	map->map = malloc(sizeof(int) * map->height_m * map->widht_m + 1);
+	size_line = map->widht_m;
+	// if (map->height_m > map->widht_m)
+	// {
+	// 	i = 1;
+	// 	map->map = malloc(sizeof(int) * map->height_m * map->height_m);
+	// 	size_line = map->height_m;
+	// }
+	// else
+	// {
+	// 	map->map = malloc(sizeof(int) * map->widht_m * map->widht_m);
+	// 	size_line = map->widht_m;
+	// 	map->height_m = map->widht_m;
+	// }
 	maph(av, map, i, size_line);
 	map->step = (int)1 / (double)sizeb;
 	int a = 0;
-	while (a < 16)
+	while (a < map->widht_m * map->height_m)
+	{
+		if ((a) % size_line == 0)
+			printf("\n");
 		printf("%d", map->map[a++]);
+	}
 	printf("\n");
 	return (map);
 }

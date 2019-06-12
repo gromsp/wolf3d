@@ -13,6 +13,7 @@
 # define widht	512
 # define height	512
 # define sizeb	32
+# define TEXSIZE 32
 
 typedef struct s_img
 {
@@ -20,10 +21,22 @@ typedef struct s_img
 	void    *win;
 	void    *img;
 	int     *addr;
+	void	*text;
+	int		*addrtext;
 	int     bts;
 	int     size_line;
 	int     endian;
 }              t_img;
+
+typedef struct s_ray
+{
+	double	x;
+	double	y;
+	double	column;
+	double	ray_angle;
+	double	angle;
+	char	wall;
+}              t_ray;
 
 typedef struct s_player
 {
@@ -47,6 +60,7 @@ typedef struct s_core
 	t_map	*map;
 	t_img	*img;
 	t_player *play;
+	t_ray	*ray;
 }              t_core;
 
 void	raycast(t_core *core);

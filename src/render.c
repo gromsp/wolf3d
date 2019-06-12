@@ -6,37 +6,65 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/09 18:34:20 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/12 21:13:38 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../include/wolf.h"
 
-void	draw(t_core *core, int ray, double ray_ang, double x, double y)
+int		floormap(t_core *core, int i, int dist)
+{
+	int x;
+	int y;
+
+	
+}
+
+int		colors(t_core *core, int i, double column, int	*text)
+{
+	int tx;
+	double	ty;
+	double	x;
+	int t;
+	int c;
+
+	if (core->ray->wall == 'n' || core->ray->wall == 's')
+		x = core->ray->x;
+	else
+		x = core->ray->y;
+	tx = (x - (int)x) * TEXSIZE;
+	ty = (double)TEXSIZE / column;
+	t = i * ty;
+	c = core->img->addrtext[tx + (t * TEXSIZE)];
+		return (c);
+}
+
+void	draw(t_core *core, int ray)
 {
 	int i;
 	double	column;
 	double	beg;
 
 	i = 0;
-	column = height / (core->play->rays * cos((ray_ang - core->play->pa) * M_PI / 180));
+	column = height / (core->play->rays * cos((core->ray->ray_angle - core->play->pa) * M_PI / 180));
 	beg = (height - column) / 2;
 	while (i < height)
 	{
 		if ((i > beg) && (i < height - beg))
 		{
-			if (core->play->px > x && (fmod(x, 1.0) < 0.05) && (x + core->map->step == x - core->map->step))
-				core->img->addr[ray + (i * height)] = 0xFFFFFF;
-			if (checker(x, y, core->map) == 'n')
-				core->img->addr[ray + (i * height)] = 0x0000FF;
-			if (checker(x, y, core->map) == 's')
-				core->img->addr[ray + (i * height)] = 0x00FF00;
-			if (checker(x, y, core->map) == 'w')
-				core->img->addr[ray + (i * height)] = 0xFF0000;
+			core->ray->wall = checker(core->ray->x, core->ray->y, core->map);
+			if (core->ray->wall == 'e')
+				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+			if (core->ray->wall == 'n')
+				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+			if (core->ray->wall == 's')
+				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+			if (core->ray->wall == 'w')
+				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
 		}
-		else if (i > beg)
-			core->img->addr[ray + (i * height)] = 0x444444;
+		else if (i > beg + column)
+			core->img->addr[ray + (i * height)] = 0x000033; floormap(core, i - (beg + column), core->play->rays)
 		else
 			core->img->addr[ray + (i * height)] = 0x000033;
 		i++;			
@@ -51,27 +79,28 @@ void	raycast(t_core *core)
 	double	x;
 	double	y;
 
-	angle = (double)core->play->fov / widht;
+	core->ray->angle = (double)core->play->fov / widht;
 	ray = 0;
-	ray_ang = core->play->pa - (core->play->fov / 2);
+	core->ray->ray_angle = core->play->pa - (core->play->fov / 2);
 	while(ray < widht)
 	{
-		ray_ang += angle;
+		core->ray->ray_angle += core->ray->angle;
 		core->play->rays = 0;
-		while(core->play->rays < core->map->height_m * core->map->height_m)
+		while(core->play->rays < (core->map->height_m * core->map->widht_m) * 2)
 		{
-			x = core->play->px + core->play->rays * cos(ray_ang * M_PI / 180);
-			y = core->play->py + core->play->rays * sin(ray_ang * M_PI / 180);
-			if (core->map->map[(int)x + ((int)y * core->map->height_m)] == 1)
+			core->ray->x = core->play->px + core->play->rays * cos(core->ray->ray_angle * M_PI / 180);
+			core->ray->y = core->play->py + core->play->rays * sin(core->ray->ray_angle * M_PI / 180);
+			if (core->map->map[(int)core->ray->x + ((int)core->ray->y * core->map->widht_m)] == 1)
 			{
-				draw(core, ray, ray_ang, x, y);
+				draw(core, ray);
 				break;
 			}
-			core->play->rays += (core->map->step / 100);
+			core->play->rays += (core->map->step / 10);
 		}
 		ray++;
 	}
 	mlx_put_image_to_window(core->img->mlx, core->img->win, core->img->img, 0, 0);
+	mlx_put_image_to_window(core->img->mlx, core->img->win, core->img->text, 0, 0);
 }
 
 void	render(t_map *map)
