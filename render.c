@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/15 21:19:13 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/18 21:12:13 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,15 @@ static int		colors(t_win *cr, int i, double column)
 	int c;
 
 
-	if (cr->wall == 'n')
-		cr->objcl = 0xff0000;
-	else if (cr->wall == 's')
-		cr->objcl = 0x00ff00;
-	else if (cr->wall == 'w')
-		cr->objcl = 0x0000ff;
-	else if (cr->wall == 'e')
-		cr->objcl = 0x0f0f0f;
-//
+	// if (cr->wall == 'n')
+	// 	cr->objcl = 0xff0000;
+	// else if (cr->wall == 's')
+	// 	cr->objcl = 0x00ff00;
+	// else if (cr->wall == 'w')
+	// 	cr->objcl = 0x0000ff;
+	// else if (cr->wall == 'e')
+	// 	cr->objcl = 0xffffff;
+
 	if (cr->wall == 'n' || cr->wall == 's')
 		x = cr->hitx;
 	else
@@ -43,8 +43,8 @@ static int		colors(t_win *cr, int i, double column)
 	// printf("%d %d | ", cr->hitx, cr->hity);
 	t = i * ty;
 	c = cr->addrtext[tx + (t * TEXSIZE)];
-		// return (c);
-		return (cr->objcl);
+		return (c);
+		// return (cr->objcl);
 }
 
 void	draw(t_win *cr, int ray)

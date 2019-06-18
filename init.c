@@ -6,13 +6,14 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/15 20:28:04 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/18 21:35:59 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include <fcntl.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "wolf.h"
 
 int		hooks(t_win *cr)
@@ -49,7 +50,7 @@ int		init(char *argv, t_win *cr)
 	x = TEXSIZE;
 	y = TEXSIZE;
 	cr->text = mlx_xpm_file_to_image(cr->mlx, "stone.xpm", &x, &y);
-	// txt = mlx_get_data_addr(cr->text, &bpp, &(cr->linesize), &(endian));
+	// printf("%d, %d  ===  ", x, y);
 	cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
 	//
 	get_grid(fd0, fd, cr);

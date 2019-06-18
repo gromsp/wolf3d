@@ -38,6 +38,33 @@
 //   	}
 // }
 
+static int	ft_roundl(double x, double istep)
+{
+	int	y;
+
+	if (istep > 0)
+	{
+		y = floor(x);
+	}
+	else
+	{
+		y = ceil(x) - 1;
+	}
+	// printf("%f::::%f  ", x, y);
+	// fflush(stdout);
+	if (y < 0)
+	{
+		printf("! OOB < 0 ");
+		y = 0;
+	}
+	if (y > 23)
+	{
+		printf("! OOB > 23 ");
+		y = 0;
+	}
+	return (y);
+}
+
 void	dda(t_win *cr)
 {
 	t_obj	inext;
@@ -45,10 +72,10 @@ void	dda(t_win *cr)
 	t_obj	istep;
 	float	px;
 	float	py;
-	int		mapValue;
 	float	dx;
 	float	dy;
 	int		i_max = MAX_DIST;
+	int		mapValue;
 
 	cr->dist = 0;
 	cr->objcl = 0;
@@ -69,14 +96,20 @@ void	dda(t_win *cr)
 		//
 		// printf("%d, %d\n", (int)ceil(py + 0.01 * istep.y), (int)ceil(px + 0.01 * istep.x));
 		// fflush(stdout);
-		mapValue = cr->tiles[(int)ceil(py + 0.01 * istep.y)][(int)ceil(px + 0.01 * istep.x)];
-		if (mapValue != 0)
+		if (cr->tiles[ft_roundl(py, istep.y)][ft_roundl(px, istep.x)] != 0)
 		{
-			tile_color(mapValue, cr);
 			cr->hitx = px;
 			cr->hity = py;
 			return ;
 		}
+		// mapValue = cr->tiles[(int)ceil(py + 0.01 * istep.y)][(int)ceil(px + 0.01 * istep.x)];
+		// if (mapValue != 0)
+		// {
+		// 	tile_color(mapValue, cr);
+		// 	cr->hitx = px;
+		// 	cr->hity = py;
+		// 	return ;
+		// }
 		dx = ((float)(inext.x) - cr->player.x) * d_inv.x;
 		dy = ((float)(inext.y) - cr->player.y) * d_inv.y;
 		cr->dist = dx < dy ? dx : dy;
