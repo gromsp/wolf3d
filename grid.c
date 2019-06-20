@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:10 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/15 20:44:11 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/20 20:19:15 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void		grid_line(char *line, int j, t_win *cr)
+static void		map_line(char *line, int j, t_win *cr)
 {
 	char			**arr;
 	int				i;
@@ -43,7 +43,7 @@ static void		vector_init(t_win *cr)
 	cr->plane.len = cr->plane.x > cr->plane.y ? cr->plane.x : cr->plane.y;
 }
 
-void			get_grid(int fd0, int fd, t_win *cr)
+void			get_map(int fd0, int fd, t_win *cr)
 {
 	char		*line;
 	int			yc;
@@ -58,6 +58,13 @@ void			get_grid(int fd0, int fd, t_win *cr)
 	cr->x_len = ft_ctwords(line, ' ');
 	free(line);
 	img_new(cr);
+	// cr->y_len = yc;
+	// cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len + 1);//+1 ??????
+	while (get_next_line(fd0, &line) == 1)
+	{
+		yc++;
+		free(line);
+	}
 	cr->y_len = yc;
 	cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len);
 	yc = 0;
@@ -65,7 +72,7 @@ void			get_grid(int fd0, int fd, t_win *cr)
 	{
 		if (!((cr->tiles)[yc] = (int *)malloc(sizeof(int) * cr->x_len)))
 			err_ex(0);
-		grid_line(line, yc, cr);
+		map_line(line, yc, cr);
 		yc++;
 		free(line);
 	}

@@ -5,38 +5,38 @@
 #include <stdlib.h>
 #include "wolf.h"
 
-// void		bresenham(t_win *cr)
-// {
-// 	int		x0;
-// 	int		y0;
-// 	int		x1;
-// 	int		y1;
-//
-// 	x0 = cr->vs->x_i;
-// 	y0 = cr->vs->y_i;
-// 	x1 = cr->vs->x_i;
-// 	y1 = cr->vs->y2_i;
-// 	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
-// 	int dy = abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
-// 	int err = (dx > dy ? dx : -dy) / 2, e2;
-//  	while (x0 != x1 || y0 != y1)
-// 	{
-//     	img_pxl(cr, x0, y0, cr->objcl);
-//     	// if (x0 == x1 && y0 == y1)
-// 		// 	break;
-//     	e2 = err;
-//     	if (e2 >- dx)
-// 		{
-// 			err -= dy;
-// 			x0 += sx;
-// 		}
-//     	if (e2 < dy)
-// 		{
-// 			err += dx;
-// 			y0 += sy;
-// 		}
-//   	}
-// }
+void		bresenham(t_win *cr)
+{
+	int		x0;
+	int		y0;
+	int		x1;
+	int		y1;
+
+	x0 = cr->vs->x_i;
+	y0 = cr->vs->y_i;
+	x1 = cr->vs->x2_i;
+	y1 = cr->vs->y2_i;
+	int dx = abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+	int dy = abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+	int err = (dx > dy ? dx : -dy) / 2, e2;
+ 	while (x0 != x1 || y0 != y1)
+	{
+    	img_pxl(cr, x0, y0, cr->vs->vcolor);
+    	// if (x0 == x1 && y0 == y1)
+		// 	break;
+    	e2 = err;
+    	if (e2 >- dx)
+		{
+			err -= dy;
+			x0 += sx;
+		}
+    	if (e2 < dy)
+		{
+			err += dx;
+			y0 += sy;
+		}
+  	}
+}
 
 static int	ft_roundl(double x, double istep)
 {
@@ -62,6 +62,8 @@ static int	ft_roundl(double x, double istep)
 		printf("! OOB > 23 ");
 		y = 0;
 	}
+	// printf("%d ++++ ", y);
+	// fflush(stdout);
 	return (y);
 }
 
@@ -96,8 +98,11 @@ void	dda(t_win *cr)
 		//
 		// printf("%d, %d\n", (int)ceil(py + 0.01 * istep.y), (int)ceil(px + 0.01 * istep.x));
 		// fflush(stdout);
+		// printf("%d, %d | ", ft_roundl(py, istep.y), ft_roundl(px, istep.x));
+		// fflush(stdout);
 		if (cr->tiles[ft_roundl(py, istep.y)][ft_roundl(px, istep.x)] != 0)
 		{
+			// img_pxl(cr, px * cr->vs->gridsize + cr->vs->x_offset, py * cr->vs->gridsize + cr->vs->y_offset, 0x0000ff);//Для минимапы
 			cr->hitx = px;
 			cr->hity = py;
 			return ;

@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:16 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/18 21:35:12 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/20 21:17:53 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,13 @@ typedef struct		s_visual
 {
 	int				x_i;
 	int				y_i;
+	int				x2_i;
 	int				y2_i;
+	int				x_offset;
+	int				y_offset;
+	int				vcolor;
+	int				mmsize;
+	int				gridsize;
 }					t_visual;
 
 typedef struct		s_obj
@@ -53,7 +59,6 @@ typedef struct		s_win
 	t_obj			dir;
 	t_obj			plane;
 	double			dist;
-	double			trash;
 	int				objcl;
 	double			castx;
 	double			casty;
@@ -83,7 +88,7 @@ typedef struct		s_win
 
 int					init(char *argv, t_win *cr);
 int					hooks(t_win *cr);
-void				get_grid(int fd0, int fd, t_win *cr);
+void				get_map(int fd0, int fd, t_win *cr);
 void				render(t_win *cr);
 void				img_new(t_win *cr);
 void				img_pxl(t_win *cr, int x, int y, int color);
@@ -95,10 +100,14 @@ int					mouse_move(int x, int y, t_win *cr);
 void				make_cast(t_win *cr);
 void				bresenham(t_win *cr);
 void				dda(t_win *cr);
+void				bresenham(t_win *cr);
 int					wall_check(t_win *cr, double x, double y);
 void				transform(t_win *cr, double *x0, double *y0, char dir);
 void				tile_color(int wt, t_win *cr);
 void				calc_line(t_win *cr);
+void				draw_rectangle(t_win *cr, int x, int y, int xlen, int ylen);
+void				minimap(t_win *cr);
+void				minimap_init(t_win *cr);
 //
 char	checker(double x, double y, int **tiles);
 // void	render(t_map *map);

@@ -6,7 +6,7 @@
 #    By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/06 15:55:47 by jsteuber          #+#    #+#              #
-#    Updated: 2019/06/14 19:44:24 by jsteuber         ###   ########.fr        #
+#    Updated: 2019/06/20 18:08:01 by jsteuber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS += -Wall -Wextra -g
 
 SRC = prom.c grid.c actions.c visual.c \
 image.c color.c render.c supp.c \
-raycast.c castman.c matrix.c init.c
+raycast.c castman.c matrix.c init.c minimap.c
 
 OBJ = $(SRC:.c=.o)
 
