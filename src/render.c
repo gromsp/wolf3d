@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/21 16:18:25 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 19:23:21 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ void	draw(t_core *core, int ray)
 		{
 			core->ray->wall = checker(core->ray->x, core->ray->y, core->map);
 			if (core->ray->wall == 'e')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+				core->img->addr[ray + (i * height)] = 0xff0000;
 			if (core->ray->wall == 'n')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+				core->img->addr[ray + (i * height)] = 0x00ff00;
 			if (core->ray->wall == 's')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+				core->img->addr[ray + (i * height)] = 0x0000ff;
 			if (core->ray->wall == 'w')
 				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
 		}
