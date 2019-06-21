@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:54:43 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 18:14:45 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 21:14:43 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ void			visual(t_win *cr)
 	minimap_init(cr);
 	minimap(cr);
 	//
-	printf("px: %f, py: %f, dirx: %f, diry: %f\n", cr->player.x, cr->player.y, cr->dir.x, cr->dir.y);
+	// printf("px: %f, py: %f, dirx: %f, diry: %f\n", cr->player.x, cr->player.y, cr->dir.x, cr->dir.y);
 	mlx_put_image_to_window(cr->mlx, cr->win, cr->img_ptr, 0, 0);
 }

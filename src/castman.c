@@ -42,7 +42,7 @@ static int	ft_roundl(double x, double istep)
 {
 	int	y;
 
-	if (istep > 0)
+	if (istep >= 0)
 	{
 		y = floor(x);
 	}
@@ -101,6 +101,7 @@ void	dda(t_win *cr)
 		// printf("%d, %d | ", ft_roundl(py, istep.y), ft_roundl(px, istep.x));
 		// fflush(stdout);
 		if (cr->tiles[ft_roundl(py, istep.y)][ft_roundl(px, istep.x)] != 0)
+		// if ((checker(cr, px, py, cr->tiles)) != ' ')
 		{
 			// img_pxl(cr, px * cr->vs->gridsize + cr->vs->x_offset, py * cr->vs->gridsize + cr->vs->y_offset, 0x0000ff);//Для минимапы
 			cr->hitx = px;

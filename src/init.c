@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 20:03:24 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 21:19:51 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ int		hooks(t_win *cr)
 	mlx_hook(cr->win, 2, 1, key_action, cr);
 	mlx_loop(cr->mlx);
 	return (0);
+}
+
+void		vector_init(t_win *cr)
+{
+	cr->player.x = 6.1; //Добавить функцию поиска свободной клетки
+	cr->player.y = 3.5; //для помещения туда игрока
+	cr->dir.x = 0;
+	cr->dir.y = 10;
+	cr->plane.x = 5;
+	cr->plane.y = 0;
+	cr->dir.len = cr->dir.x > cr->dir.y ? cr->dir.x : cr->dir.y;
+	cr->plane.len = cr->plane.x > cr->plane.y ? cr->plane.x : cr->plane.y;
 }
 
 int		init(char *argv, t_win *cr)

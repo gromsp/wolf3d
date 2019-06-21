@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:16 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 20:03:24 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 20:55:07 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,9 @@ typedef struct		s_win
 	double		hity;//Место попадания луча
 	int			endian;
 	int			bpp;
+	//
+	double		x_mem;//Это все для управления мышью
+	//
 }					t_win;
 
 # define WIN_WIDTH 1300
@@ -105,6 +108,7 @@ void				calc_line(t_win *cr);
 void				draw_rectangle(t_win *cr, int x, int y, int xlen, int ylen);
 void				minimap(t_win *cr);
 void				minimap_init(t_win *cr);
+void				vector_init(t_win *cr);
 //
 char	checker(t_win *cr, double x, double y, int **tiles);
 // void	render(t_map *map);
