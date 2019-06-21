@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstfree.c                                       :+:      :+:    :+:   */
+/*   ft_strrev.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/06 17:28:58 by adoyle            #+#    #+#             */
-/*   Updated: 2018/12/06 17:54:53 by adoyle           ###   ########.fr       */
+/*   Created: 2019/01/12 20:47:50 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/12 21:26:31 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstfree(t_list *lst)
+void	ft_strrev(char *s)
 {
-	if (!lst)
-		return ;
-	while (lst)
+	size_t		i;
+	size_t		j;
+	char		tmp;
+
+	i = 0;
+	j = ft_strlen(s);
+	while (i < j--)
 	{
-		free(lst->content);
-		free(lst);
-		lst = lst->next;
+		tmp = s[i];
+		s[i++] = s[j];
+		s[j] = tmp;
 	}
 }

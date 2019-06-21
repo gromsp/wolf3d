@@ -3,38 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/30 19:11:02 by adoyle            #+#    #+#             */
-/*   Updated: 2018/12/04 18:54:33 by adoyle           ###   ########.fr       */
+/*   Created: 2018/12/20 18:25:58 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/12 21:26:46 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s)
+static size_t	ct_spaces(const char *s, char flag)
 {
-	char	*str;
-	int		i;
-	int		j;
-	int		k;
+	size_t	i;
 
 	i = 0;
-	j = 0;
-	if (s == 0)
-		return (NULL);
-	k = ft_strlen(s) - 1;
-	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
-		i++;
-	if (i == k + 1)
+	while (*s)
 	{
-		str = (char *)malloc(1);
-		str[0] = '\0';
-		return (str);
+		if (*s == ' ' || *s == '\n' || *s == '\t')
+		{
+			if (flag == 0)
+				s++;
+			else
+				s--;
+		}
+		else
+			return (i);
+		i++;
 	}
-	while (s[k] == ' ' || s[k] == '\n' || s[k] == '\t')
-		k--;
-	k = k - i + 1;
-	str = ft_strsub(s, i, k);
-	return (str);
+	return (i);
+}
+
+char			*ft_strtrim(char const *s)
+{
+	char	*ptr;
+	size_t	spaces;
+
+	if (s == NULL)
+		return (NULL);
+	spaces = ct_spaces(s + (ft_strlen(s) - 1), 1) + \
+(ct_spaces(s, 0));
+	if (spaces >= ft_strlen(s))
+		return (ft_strnew(0));
+	ptr = ft_strsub(s, ct_spaces(s, 0), ft_strlen(s) - spaces);
+	if (ptr == NULL)
+		return (NULL);
+	return (ptr);
 }

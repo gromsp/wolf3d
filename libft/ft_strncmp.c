@@ -3,28 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/27 14:53:20 by adoyle            #+#    #+#             */
-/*   Updated: 2018/12/06 22:41:39 by adoyle           ###   ########.fr       */
+/*   Created: 2019/01/22 18:27:58 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/22 18:28:57 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strncmp(const char *s1, const char *s2, size_t n)
+int		ft_strncmp(const char *s1, const char *s2, size_t size)
 {
-	int i;
+	unsigned char *str1;
+	unsigned char *str2;
 
-	i = 0;
-	if (n < 1)
-		return (0);
-	while (*s1 && *s2 && (n--) - 1 > 0)
-	{
-		if (*s1 != *s2)
-			return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
-		s1++;
-		s2++;
-	}
-	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while ((*str1 || *str2) && size-- > 0)
+		if (*(str1++) != *(str2++))
+			return (*(str1 - 1) - *(str2 - 1));
+	return (0);
 }

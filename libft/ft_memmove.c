@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/25 18:25:34 by adoyle            #+#    #+#             */
-/*   Updated: 2018/11/29 18:38:34 by adoyle           ###   ########.fr       */
+/*   Created: 2019/01/22 18:13:13 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/22 19:25:28 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t num)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	unsigned char		*dst_tempo;
-	const unsigned char	*src_tempo;
-	int					i;
+	unsigned char *d;
+	unsigned char *s;
 
-	i = 0;
-	if (dest < src)
-		ft_memcpy(dest, src, num);
-	else if (dest > src)
+	if (dest == NULL && src == NULL)
+		return (dest);
+	d = (unsigned char *)dest;
+	s = (unsigned char *)src;
+	if (s < d)
 	{
-		dst_tempo = (unsigned char *)dest;
-		src_tempo = (const unsigned char *)src;
-		while (num--)
-			dst_tempo[num] = src_tempo[num];
+		while (n--)
+			d[n] = s[n];
 	}
-	return ((char*)dest);
+	else
+		ft_memcpy(d, s, n);
+	return (d);
 }

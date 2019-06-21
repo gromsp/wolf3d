@@ -6,23 +6,47 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 16:21:49 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/12 20:05:52 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 20:04:00 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/wolf.h"
+#include "wolf.h"
+#include <stdio.h>
+#include <math.h>
 
-char	checker(double x, double y, t_map *map)
+char	checker(t_win *cr, double x, double y, int **tiles)
 {
-	char s;
-	
-	if (map->map[(int)(x + 0.01) + ((int)y * map->widht_m)] == 0)
-		s = 'e';
-	if (map->map[(int)(x - 0.01) + ((int)y * map->widht_m)] == 0)
-		s = 'w';
-	if (map->map[(int)x + ((int)(y + 0.01) * map->widht_m)] == 0)
-		s = 's';
-	if (map->map[(int)x + ((int)(y - 0.01) * map->widht_m)] == 0)
-		s = 'n';
+	char s = ' ';
+
+	// printf("%f %f | ", x, y);
+	if ((x - (int)x) == 0)
+	{
+		if (tiles[(int)y][(int)(x + 0.00001)] == 0)
+			s = 'e';
+		else if (tiles[(int)y][(int)(x - 0.00001)] == 0)
+			s = 'w';
+	}
+	else
+	{
+		if (tiles[(int)(y + 0.00001)][(int)x] == 0)
+			s = 's';
+		if (tiles[(int)(y - 0.00001)][(int)x] == 0)
+			s = 'n';
+	}
 	return (s);
 }
+
+// char	checker(t_win *cr, double x, double y, int **tiles)
+// {
+// 	char s;
+//
+// 	if (tiles[(int)y][(int)(x + 0.00001)] == 0)
+// 		s = 'e';
+// 	else if (tiles[(int)y][(int)(x - 0.00001)] == 0)
+// 		s = 'w';
+// 	if (tiles[(int)(y + 0.00001)][(int)x] == 0)
+// 		s = 's';
+// 	if (tiles[(int)(y - 0.00001)][(int)x] == 0)
+// 		s = 'n';
+// 	return (s);
+// }

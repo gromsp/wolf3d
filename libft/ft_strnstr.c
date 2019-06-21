@@ -3,40 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/27 14:23:05 by adoyle            #+#    #+#             */
-/*   Updated: 2018/12/07 16:03:07 by adoyle           ###   ########.fr       */
+/*   Created: 2019/01/22 18:30:09 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/22 18:30:57 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *str2, const char *str1, size_t num)
+char	*ft_strnstr(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
 	size_t	j;
-	size_t	len;
 
 	i = 0;
-	if (*(str1 + i) == '\0')
-		return ((char*)str2 + i);
-	while (*(str2 + i) && i < num)
+	j = 0;
+	if (!(*s2))
+		return ((char *)s1);
+	while (s1[i] != '\0' && i < n)
 	{
 		j = 0;
-		len = 0;
-		if (*(str2 + i) == *(str1 + j))
-		{
-			while (*(str1 + j) != '\0' && i < num)
-			{
-				if ((*(str2 + i++)) == (*(str1 + j++)))
-					len++;
-				if (len == ft_strlen(str1))
-					return ((char*)str2 + i - j);
-			}
-			i = i - len;
-		}
+		while (s1[i + j] && (i + j) < n && s1[i + j] == s2[j])
+			j++;
+		if (s2[j] == '\0')
+			return ((char *)&s1[i]);
 		i++;
 	}
-	return (0);
+	return (NULL);
 }

@@ -3,64 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/12/04 16:32:27 by adoyle            #+#    #+#             */
-/*   Updated: 2018/12/06 20:28:15 by adoyle           ###   ########.fr       */
+/*   Created: 2018/12/23 17:55:57 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/12 21:23:43 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static char	*algitoa(char *str, long long int n)
+static int	ft_nbrlen(int n)
 {
-	long long int i;
-	long long int a;
-	long long int t;
+	int		i;
 
-	i = 0;
-	a = 10000000000;
-	if (n < 0)
+	i = 1;
+	while (n > 9)
 	{
-		n = n * (-1);
-		str[i++] = '-';
+		n /= 10;
+		i++;
 	}
-	t = n;
-	while (a != 0)
-	{
-		if (n / a != 0)
-			str[i++] = (t / a) + 48;
-		t = t - (t / a) * a;
-		a = a / 10;
-	}
-	str[i] = '\0';
-	return (str);
+	return (i);
 }
 
 char		*ft_itoa(int n)
 {
-	int				i;
-	char			*str;
-	long long int	p;
+	int		i;
+	int		fminus;
+	char	*str;
 
-	i = 0;
-	p = n;
-	str = malloc(sizeof(char *) * 2);
-	if (str == NULL)
-		return (NULL);
-	if (n < 0)
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	if ((fminus = n) < 0)
 	{
-		str = algitoa(str, p);
+		n = -n;
+		if ((str = ft_strnew(ft_nbrlen(n) + 1)) == NULL)
+			return (NULL);
 	}
 	else
-	{
-		if (n == 0)
-		{
-			str[i++] = '0';
-			str[i++] = '\0';
-			return (str);
-		}
-		str = algitoa(str, p);
-	}
+		str = ft_strnew(ft_nbrlen(n));
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	str[i++] = n % 10 + '0';
+	while ((n /= 10) > 0)
+		str[i++] = n % 10 + '0';
+	if (fminus < 0)
+		str[i++] = '-';
+	ft_strrev(str);
 	return (str);
 }

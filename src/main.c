@@ -5,23 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/08 16:21:49 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/08 21:02:33 by adoyle           ###   ########.fr       */
+/*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/06/21 20:03:23 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/wolf.h"
+#include "mlx.h"
+#include <fcntl.h>
+#include <stdlib.h>
+#include "wolf.h"
 
-int		main(int ac, char **av)
+void	err_ex(int pr)
 {
-	t_map *map;
-	
-	if (ac != 2)
-	{
-		write(1, "Need map file: .map\n", 20);
-		return(-2);
-	}
-	map = parser(av[1], map);
-	render(map);
+	if (pr == 0)
+		ft_putstr("Error: memory allocation failure\n");
+	if (pr == 1)
+		ft_putstr("Error: invalid map\n");
+	if (pr == 2)
+		ft_putstr("Error: can't read from file\n");
+	exit(1);
+}
+
+int		main(int argc, char **argv)
+{
+	t_win		*cr;
+
+	if (!(cr = (t_win *)malloc(sizeof(t_win))))
+		err_ex(0);
+	init(argv[1], cr);
+	hooks(cr);
+	(void)argc;
 	return (0);
 }

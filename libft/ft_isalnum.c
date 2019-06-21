@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/27 15:45:27 by adoyle            #+#    #+#             */
-/*   Updated: 2018/11/29 18:30:21 by adoyle           ###   ########.fr       */
+/*   Created: 2019/01/22 18:02:15 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/01/22 18:58:12 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		ft_isalnum(int c)
 {
-	if ((c > 47 && c < 58) || (c > 64 && c < 91) || (c > 96 && c < 123))
+	if (ft_isdigit(c) == 1 || ft_isalpha(c) == 1)
 		return (1);
 	return (0);
 }

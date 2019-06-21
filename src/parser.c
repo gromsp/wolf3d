@@ -5,141 +5,80 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/06/08 16:22:57 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/12 16:55:20 by adoyle           ###   ########.fr       */
+/*   Created: 2019/04/06 15:55:10 by jsteuber          #+#    #+#             */
+/*   Updated: 2019/06/21 20:03:22 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/wolf.h"
+#include "wolf.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-int		heightm(char *av)
+static void		map_line(char *line, int j, t_win *cr)
 {
-	int		i;
-	int		fd;
-	char	*line;
+	char			**arr;
+	int				i;
+	int				line_len_ct;
 
 	i = 0;
-	fd = open(av, O_RDONLY);
-	while (get_next_line(fd, &line) == 1)
+	arr = ft_strsplit(line, ' ');
+	line_len_ct = cr->x_len;
+	while (line_len_ct--)
 	{
+		cr->tiles[j][cr->x_len - line_len_ct - 1] = ft_atoi(arr[i]);
 		i++;
 	}
-	close(fd);
-	return (i);
+	ft_arrfree(&arr, cr->x_len);
 }
 
-int		widhtm(char *av)
+static void		vector_init(t_win *cr)
 {
-	int		i;
-	int		fd;
-	int		j;
-	char	*line;
+	cr->player.x = 5.1; //Добавить функцию поиска свободной клетки
+	cr->player.y = 5.5; //для помещения туда игрока
+	cr->dir.x = 0;
+	cr->dir.y = 10;
+	cr->plane.x = 5;
+	cr->plane.y = 0;
+	cr->dir.len = cr->dir.x > cr->dir.y ? cr->dir.x : cr->dir.y;
+	cr->plane.len = cr->plane.x > cr->plane.y ? cr->plane.x : cr->plane.y;
+}
 
-	i = 0;
-	j = 0;
-	fd = open(av, O_RDONLY);
-	get_next_line(fd, &line);
-	while (line[i])
+void			get_map(int fd0, int fd, t_win *cr)
+{
+	char		*line;
+	int			yc;
+
+	yc = 0;
+	if (get_next_line(fd0, &line) == 1)
 	{
-		if ((line[i - 1]) && line[i - 1] == 32 && line[i] != 32)
-			j++;
-		i++;
+		yc++;
 	}
+	else
+		err_ex(2);
+	cr->x_len = ft_ctwords(line, ' ');
 	free(line);
-	while ((get_next_line(fd, &line)) == 1)
+	img_new(cr);
+	// cr->y_len = yc;
+	// cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len + 1);//+1 ??????
+	while (get_next_line(fd0, &line) == 1)
 	{
-		i++;
+		yc++;
 		free(line);
 	}
-	close(fd);
-	return (j);
-}
-
-void	mapa(int f, int size_line, t_map *map, char *str)
-{
-	static int	i;
-	int			j;
-
-
-	j = 0;
-	if (i == 0 || i % size_line == 0)
-	{
-		map->map[i] = ft_atoi(str + j);
-		i++;
-		j++;
-	}
-	while (f > i)
-	{
-		if (str[j] != 0 && str[j - 1] == 32 && str[j] != 32)
-		{
-			map->map[i] = ft_atoi(str + j);
-			i++;
-			j++;
-		}
-		else if ((!(str)) || (str[j] == 0))
-		{
-			map->map[i] = 1;
-			i++;
-		}
-		else
-			j++;
-	}
-}
-
-void	maph(char *av, t_map *map, int f, int size_line)
-{
-	int		i;
-	int		j;
-	int		fd;
-	char	*line;
-
-	i = size_line;
-	j = size_line;
-	fd = open(av, O_RDONLY);
+	cr->y_len = yc;
+	cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len);
+	yc = 0;
 	while (get_next_line(fd, &line) == 1)
 	{
-		// get_next_line(fd, &line);
-		mapa(j, size_line, map, line);
-		j = j + size_line;
+		if (!((cr->tiles)[yc] = (int *)malloc(sizeof(int) * cr->x_len)))
+			err_ex(0);
+		map_line(line, yc, cr);
+		yc++;
 		free(line);
-		i--;
 	}
+	close(fd0);
+	vector_init(cr);
+	img_new(cr);
+	visual(cr);
 	close(fd);
-}
-
-t_map	*parser(char *av, t_map *map)
-{
-	int i;
-	int size_line;
-
-	i = 0;
-	if (!(map = malloc(sizeof(t_map))))
-		exit(-2);
-	map->height_m = heightm(av);
-	map->widht_m = widhtm(av);
-	map->map = malloc(sizeof(int) * map->height_m * map->widht_m + 1);
-	size_line = map->widht_m;
-	// if (map->height_m > map->widht_m)
-	// {
-	// 	i = 1;
-	// 	map->map = malloc(sizeof(int) * map->height_m * map->height_m);
-	// 	size_line = map->height_m;
-	// }
-	// else
-	// {
-	// 	map->map = malloc(sizeof(int) * map->widht_m * map->widht_m);
-	// 	size_line = map->widht_m;
-	// 	map->height_m = map->widht_m;
-	// }
-	maph(av, map, i, size_line);
-	map->step = (int)1 / (double)sizeb;
-	int a = 0;
-	while (a < map->widht_m * map->height_m)
-	{
-		if ((a) % size_line == 0)
-			printf("\n");
-		printf("%d", map->map[a++]);
-	}
-	printf("\n");
-	return (map);
 }

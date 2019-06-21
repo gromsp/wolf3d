@@ -1,3 +1,14 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2019/04/06 15:55:47 by jsteuber          #+#    #+#              #
+#    Updated: 2019/06/21 19:59:32 by adoyle           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
 NAME=wolf3d
 
@@ -13,7 +24,9 @@ MLX_INC_PATH=/usr/X11/include
 FT_PATH=./libft
 BIN_PATH=./bin
 
-SRC= main.c parser.c init.c render.c hooks.c supp.c
+SRC= main.c parser.c actions.c visual.c \
+image.c color.c render.c supp.c \
+raycast.c castman.c matrix.c init.c minimap.c
 OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
 .PHONY: all clean fclean re

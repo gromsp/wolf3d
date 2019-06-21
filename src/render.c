@@ -6,22 +6,17 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/21 16:18:25 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 20:03:43 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-#include "../include/wolf.h"
+#include "wolf.h"
+#include <stdio.h>
+#include "mlx.h"
 
-// int		floormap(t_core *core, int i, int dist)
-// {
-// 	int x;
-// 	int y;
 
-	
-// }
-
-int		colors(t_core *core, int i, double column, int	*text)
+static int		colors(t_win *cr, int i, double column)
 {
 	int tx;
 	double	ty;
@@ -29,109 +24,59 @@ int		colors(t_core *core, int i, double column, int	*text)
 	int t;
 	int c;
 
-	if (core->ray->wall == 'n' || core->ray->wall == 's')
-		x = core->ray->x;
+
+	if (cr->wall == 'n')
+		cr->objcl = 0xff0000;
+	else if (cr->wall == 's')
+		cr->objcl = 0x00ff00;
+	else if (cr->wall == 'w')
+		cr->objcl = 0x0000ff;
+	else if (cr->wall == 'e')
+		cr->objcl = 0xffffff;
+	else if (cr->wall == ' ')
+		cr->objcl = 0x000000;
+
+	if (cr->wall == 'n' || cr->wall == 's')
+		x = cr->hitx;
 	else
-		x = core->ray->y;
+		x = cr->hity;
 	tx = (x - (int)x) * TEXSIZE;
 	ty = (double)TEXSIZE / column;
+	// printf("%d %d | ", cr->hitx, cr->hity);
 	t = i * ty;
-	c = core->img->addrtext[tx + (t * TEXSIZE)];
-		return (c);
+	// if (cr->rcurr == 1)
+	// 	cr->objcl = 0x0000ff;
+	c = cr->addrtext[tx + (t * TEXSIZE)];
+		// return (c);
+		return (cr->objcl);
 }
 
-int	floormap(double y, double distWall, t_core *core)
-{
-	double distPlayer;
-	double currentDist;
-	int c;
-
-    currentDist = (double)height / (2.0 * (double)y - (double)height);
-	double weight = currentDist / distWall;
-
-    double currentFloorX = weight * core->ray->x + (1.0 - weight) * core->play->px;
-    double currentFloorY = weight * core->ray->y + (1.0 - weight) * core->play->px;
-
-    int floorTexX, floorTexY;
-    floorTexX = (int)(currentFloorX * 32) % 32;
-    floorTexY = (int)(currentFloorY * 32) % 32;
-
-   c = core->img->addrtext[32 * floorTexY + floorTexX];
-   return (c);
-}
-
-void	draw(t_core *core, int ray)
+void	draw(t_win *cr, int ray)
 {
 	int i;
 	double	column;
 	double	beg;
 
 	i = 0;
-	column = height / (core->play->rays * cos((core->ray->ray_angle - core->play->pa) * M_PI / 180));
-	beg = (height - column) / 2;
-	while (i < height)
+	column = WIN_HIGHT / cr->dist / 5;//Заменить на норм. расчет высоты столбцов
+	beg = (WIN_HIGHT - column) / 2;
+	// printf("%d    ", ray);
+	// fflush(stdout);
+	while (i < WIN_HIGHT)
 	{
-		if ((i > beg) && (i < height - beg))
+		if ((i > beg) && (i < WIN_HIGHT - beg) && i > 0)
 		{
-			core->ray->wall = checker(core->ray->x, core->ray->y, core->map);
-			if (core->ray->wall == 'e')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
-			if (core->ray->wall == 'n')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
-			if (core->ray->wall == 's')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
-			if (core->ray->wall == 'w')
-				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
+			cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
+			// cr->wall = 's';
+			if (cr->wall == 'e')
+				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
+			if (cr->wall == 'n')
+				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
+			if (cr->wall == 's')
+				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
+			if (cr->wall == 'w')
+				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
 		}
-		else if (i > beg + column)
-			core->img->addr[ray + (i * height)] = floormap(i, core->play->rays, core);
-		else
-			core->img->addr[ray + (i * height)] = 0x000033;
-		i++;			
+		i++;
 	}
-}
-
-void	raycast(t_core *core)
-{
-	double	angle;
-	int		ray;
-	double	ray_ang;
-	double	x;
-	double	y;
-
-	core->ray->angle = (double)core->play->fov / widht;
-	ray = 0;
-	core->ray->ray_angle = core->play->pa - (core->play->fov / 2);
-	while(ray < widht)
-	{
-		core->ray->ray_angle += core->ray->angle;
-		core->play->rays = 0;
-		while(core->play->rays < (core->map->height_m * core->map->widht_m) * 2)
-		{
-			core->ray->x = core->play->px + core->play->rays * cos(core->ray->ray_angle * M_PI / 180);
-			core->ray->y = core->play->py + core->play->rays * sin(core->ray->ray_angle * M_PI / 180);
-			if (core->map->map[(int)core->ray->x + ((int)core->ray->y * core->map->widht_m)] == 1)
-			{
-				draw(core, ray);
-				break;
-			}
-			core->play->rays += (core->map->step / 10);
-		}
-		ray++;
-	}
-	mlx_put_image_to_window(core->img->mlx, core->img->win, core->img->img, 0, 0);
-	mlx_put_image_to_window(core->img->mlx, core->img->win, core->img->text, 0, 0);
-}
-
-void	render(t_map *map)
-{
-	t_core	*core;
-
-	core = initcore(core);
-	core->map = map;
-	raycast(core);
-	mlx_key_hook(core->img->win, control, (void*)(core));
-	// mlx_mouse_hook(core->img->win, controlms, (void*)(core));
-	// mlx_hook(core->img->win, 6, 0, mouse_move, (void*)(core));
-	mlx_loop(core->img->mlx);
 }
