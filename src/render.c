@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/12 21:13:38 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/21 16:18:25 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	floormap(double y, double distWall, t_core *core)
 	double currentDist;
 	int c;
 
-    currentDist = (double)512 / (2.0 * (double)y - (double)512);
+    currentDist = (double)height / (2.0 * (double)y - (double)height);
 	double weight = currentDist / distWall;
 
     double currentFloorX = weight * core->ray->x + (1.0 - weight) * core->play->px;
