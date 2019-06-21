@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 17:47:02 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 19:43:29 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	make_cast(t_win *cr)
 {
 
 	cr->rcurr = 1; //??????????????????
-	cr->rays = WIN_WIDTH / 2;
 	// rcurr = -cr->rays;
 	while (cr->rcurr < WIN_WIDTH)
 	{

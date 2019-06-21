@@ -6,52 +6,48 @@
 #    By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/06 15:55:47 by jsteuber          #+#    #+#              #
-#    Updated: 2019/06/21 17:07:35 by jsteuber         ###   ########.fr        #
+#    Updated: 2019/06/21 19:32:09 by jsteuber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fdf
+NAME=wolf3d
 
-CFLAGS += -Wall -Wextra -g
+CFLAGS=#-Wall -Wextra -Werror
+FFLAGS= -framework OpenGL -framework AppKit
+#FFLAGS= -lXext -lX11 -lm
 
-SRC = main.c parser.c actions.c visual.c \
+SRC_PATH=./src
+INC_PATH=./include
+#MLX_PATH=./minilibx
+MLX_PATH=./minilibx_macos
+MLX_INC_PATH=/usr/X11/include
+FT_PATH=./libft
+BIN_PATH=./bin
+
+SRC= main.c parser.c actions.c visual.c \
 image.c color.c render.c supp.c \
 raycast.c castman.c matrix.c init.c minimap.c
+OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
-OBJ = $(SRC:.c=.o)
+.PHONY: all clean fclean re
 
-LIBFT = ./libft/
-LIBFT_A = libft.a
-LIBFT_L	= -L ./libft -l ft
+all: $(BIN_PATH) $(NAME)
 
-MLX = ./minilibx_macos/
-MLX_A = libmlx.a
-MLX_L = -L ./minilibx_macos -l mlx -framework OpenGL -framework AppKit
+$(BIN_PATH):
+	mkdir -p bin
 
-.PHONY = all clean fclean re
+$(NAME): $(OBJ) $(INC_PATH)/wolf.h
+	@make -s -C $(FT_PATH)
+	gcc -o $@ $(OBJ) -L$(MLX_PATH) -lmlx -I$(MLX_INC_PATH) -L$(FT_PATH) -lft -I$(FT_PATH) $(FFLAGS)
 
-all: $(LIBFT_A) $(MLX_A) $(NAME)
-
-$(OBJ): %.o: %.c
-	@gcc -c $(CFLAGS) $< -o $@
-
-$(LIBFT_A):
-	@make -C $(LIBFT)
-
-$(MLX_A):
-	@make -C $(MLX)
-
-$(NAME): $(OBJ)
-	gcc $(OBJ) $(LIBFT_L) $(MLX_L) -lm -o $(NAME)
-
+$(BIN_PATH)/%.o: $(SRC_PATH)/%.c
+	gcc -g $(CFLAGS) -o $@ -c $< -I$(INC_PATH) -I$(FT_PATH)
 
 clean:
-	@rm -f $(OBJ)
-	@make -C $(LIBFT) clean
-	@make -C $(MLX) clean
+	@make -s -C $(FT_PATH) fclean
+	rm -rf $(BIN_PATH)
 
 fclean: clean
-	@rm -f $(NAME)
-	@make -C $(LIBFT) fclean
+	rm -f $(NAME)
 
 re: fclean all

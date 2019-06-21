@@ -6,16 +6,16 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:16 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 17:21:05 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 19:48:59 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF_H
 # define WOLF_H
-# include "./libft/includes/libft.h"
-# include "./libft/includes/get_next_line.h"
+# include "../libft/includes/libft.h"
+# include "../libft/includes/get_next_line.h"
 
-typedef struct		s_visual
+typedef struct		s_visual//Для миникарты
 {
 	int				x_i;
 	int				y_i;
@@ -41,39 +41,36 @@ typedef struct		s_win
 {
 	void			*mlx;
 	void			*win;
-	int				x_len;
-	int				y_len;
+	int				x_len;//заменить на m_width
+	int				y_len;//заменить на m_hight
 	t_visual		*vs;
 	double			rotation;
 	char			*img_ptr;
 	void			*image;
 	int				linesize;
-	int				dragl;
-	int				dragr;
-	double			x_mem;
-	double			y_mem;
+	int     		bts;
+	// int				dragl;
+	// int				dragr;
+	// double			x_mem;
+	// double			y_mem;
 //
-	int				zoom;
-	int				**tiles;
-	t_obj			player;
-	t_obj			dir;
-	t_obj			plane;
-	double			dist;
-	int				objcl;
-	double			castx;
-	double			casty;
-	int				rays;
-	double			renderpoint;
-	int				prop;
+	// int				zoom;
+	int				**tiles;//Карта
+	t_obj			player;//Вектор игрока
+	t_obj			dir;//Вектор направления взгляда
+	t_obj			plane;//Вектор плоскости экрана
+	double			dist;//Расстояние до места попадания луча
+	int				objcl;//Цвет для режима подсветки граней
+	double			castx;//Место на плоскости экрана через которое кастуется луч
+	double			casty;//Место на плоскости экрана через которое кастуется луч
 	//
 	void	*text;
 	int		*addrtext;
-	int     bts;
-	int		rcurr;
+	int		rcurr;//Номер текущего луча (справа налево)
 	char		wall;
 	int     *addr;
-	double		hitx;
-	double		hity;
+	double		hitx;//Место попадания луча
+	double		hity;//Место попадания луча
 	int			endian;
 	int			bpp;
 }					t_win;

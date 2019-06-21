@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 17:22:03 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 19:44:03 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,10 @@ int		init(char *argv, t_win *cr)
 	if (!(cr->vs = (t_visual *)malloc(sizeof(t_visual))))
 		err_ex(0);
 	cr->rotation = ROTATION;
-	cr->renderpoint = WIN_WIDTH / 2;
 	//
 	x = TEXSIZE;
 	y = TEXSIZE;
-	cr->text = mlx_xpm_file_to_image(cr->mlx, "stone.xpm", &x, &y);
+	cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
 	// printf("%d, %d  ===  ", x, y);
 	cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
 	//
