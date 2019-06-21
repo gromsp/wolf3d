@@ -13,13 +13,13 @@
 
 #include "../include/wolf.h"
 
-int		floormap(t_core *core, int i, int dist)
-{
-	int x;
-	int y;
+// int		floormap(t_core *core, int i, int dist)
+// {
+// 	int x;
+// 	int y;
 
 	
-}
+// }
 
 int		colors(t_core *core, int i, double column, int	*text)
 {
@@ -38,6 +38,26 @@ int		colors(t_core *core, int i, double column, int	*text)
 	t = i * ty;
 	c = core->img->addrtext[tx + (t * TEXSIZE)];
 		return (c);
+}
+
+int	floormap(double y, double distWall, t_core *core)
+{
+	double distPlayer;
+	double currentDist;
+	int c;
+
+    currentDist = (double)512 / (2.0 * (double)y - (double)512);
+	double weight = currentDist / distWall;
+
+    double currentFloorX = weight * core->ray->x + (1.0 - weight) * core->play->px;
+    double currentFloorY = weight * core->ray->y + (1.0 - weight) * core->play->px;
+
+    int floorTexX, floorTexY;
+    floorTexX = (int)(currentFloorX * 32) % 32;
+    floorTexY = (int)(currentFloorY * 32) % 32;
+
+   c = core->img->addrtext[32 * floorTexY + floorTexX];
+   return (c);
 }
 
 void	draw(t_core *core, int ray)
@@ -64,7 +84,7 @@ void	draw(t_core *core, int ray)
 				core->img->addr[ray + (i * height)] = colors(core, i - beg, column, core->img->addrtext);
 		}
 		else if (i > beg + column)
-			core->img->addr[ray + (i * height)] = 0x000033; floormap(core, i - (beg + column), core->play->rays)
+			core->img->addr[ray + (i * height)] = floormap(i, core->play->rays, core);
 		else
 			core->img->addr[ray + (i * height)] = 0x000033;
 		i++;			

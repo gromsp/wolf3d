@@ -1,7 +1,7 @@
 #ifndef WOLF_H
 # define WOLF_H
 
-# include "mlx.h"
+# include "../minilibx_macos/mlx.h"
 
 # include "libft.h"
 # include "get_next_line.h"
