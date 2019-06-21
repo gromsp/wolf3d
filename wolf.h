@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:16 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/20 21:17:53 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 17:21:05 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ typedef struct		s_win
 # define SPEED 0.3
 # define MAX_DIST 35
 //
-# define TEXSIZE 32
+# define TEXSIZE 720
 
 int					init(char *argv, t_win *cr);
 int					hooks(t_win *cr);
 void				get_map(int fd0, int fd, t_win *cr);
-void				render(t_win *cr);
+void				visual(t_win *cr);
 void				img_new(t_win *cr);
 void				img_pxl(t_win *cr, int x, int y, int color);
 int					key_action(int keycode, t_win *cr);
@@ -109,7 +109,7 @@ void				draw_rectangle(t_win *cr, int x, int y, int xlen, int ylen);
 void				minimap(t_win *cr);
 void				minimap_init(t_win *cr);
 //
-char	checker(double x, double y, int **tiles);
+char	checker(t_win *cr, double x, double y, int **tiles);
 // void	render(t_map *map);
 void	draw(t_win *cr, int ray);
 

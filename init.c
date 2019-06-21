@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/20 21:29:24 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 17:22:03 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 int		hooks(t_win *cr)
 {
-	render(cr);
+	visual(cr);
 	//
 	// mlx_hook(cr->win, 4, 1, mouse_press, cr);
 	// mlx_hook(cr->win, 5, 1, mouse_release, cr);

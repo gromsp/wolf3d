@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/20 21:51:32 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 17:47:02 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	make_cast(t_win *cr)
 		dda(cr);
 		// printf("%d    ", cr->rcurr);
 		// fflush(stdout);
-		calc_line(cr);
+		draw(cr, WIN_WIDTH - cr->rcurr);
 		cr->rcurr++;
 	}
 }

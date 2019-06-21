@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 16:21:49 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/20 22:06:49 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 19:12:10 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,39 @@
 #include <stdio.h>
 #include <math.h>
 
-char	checker(double x, double y, int **tiles)
+char	checker(t_win *cr, double x, double y, int **tiles)
 {
 	char s = ' ';
 
 	// printf("%f %f | ", x, y);
 	if ((x - (int)x) == 0)
 	{
-		if ((y - (int)y) == 0)
-			s = 'w';
-		else
+		if (tiles[(int)y][(int)(x + 0.00001)] == 0)
 			s = 'e';
+		else if (tiles[(int)y][(int)(x - 0.00001)] == 0)
+			s = 'w';
 	}
 	else
-		if ((y - (int)y) == 0)
-			s = 'n';
-		else
+	{
+		if (tiles[(int)(y + 0.00001)][(int)x] == 0)
 			s = 's';
+		if (tiles[(int)(y - 0.00001)][(int)x] == 0)
+			s = 'n';
+	}
 	return (s);
 }
 
-// char	checker(double x, double y, int **tiles)
+// char	checker(t_win *cr, double x, double y, int **tiles)
 // {
 // 	char s;
 //
-// 	if (tiles[(int)(x + 0.01) + ((int)y * WIN_WIDTH)] == 0)
+// 	if (tiles[(int)y][(int)(x + 0.00001)] == 0)
 // 		s = 'e';
-// 	if (tiles[(int)(x - 0.01) + ((int)y * WIN_WIDTH)] == 0)
+// 	else if (tiles[(int)y][(int)(x - 0.00001)] == 0)
 // 		s = 'w';
-// 	if (tiles[(int)x + ((int)(y + 0.01) * WIN_WIDTH)] == 0)
+// 	if (tiles[(int)(y + 0.00001)][(int)x] == 0)
 // 		s = 's';
-// 	if (tiles[(int)x + ((int)(y - 0.01) * WIN_WIDTH)] == 0)
+// 	if (tiles[(int)(y - 0.00001)][(int)x] == 0)
 // 		s = 'n';
 // 	return (s);
 // }

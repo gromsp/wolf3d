@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grid.c                                             :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:10 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/20 20:19:15 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 19:18:28 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static void		map_line(char *line, int j, t_win *cr)
 
 static void		vector_init(t_win *cr)
 {
-	cr->player.x = 3.5; //Добавить функцию поиска свободной клетки
-	cr->player.y = 3.5; //для помещения туда игрока
+	cr->player.x = 5.1; //Добавить функцию поиска свободной клетки
+	cr->player.y = 5.5; //для помещения туда игрока
 	cr->dir.x = 0;
 	cr->dir.y = 10;
 	cr->plane.x = 5;
@@ -79,6 +79,6 @@ void			get_map(int fd0, int fd, t_win *cr)
 	close(fd0);
 	vector_init(cr);
 	img_new(cr);
-	render(cr);
+	visual(cr);
 	close(fd);
 }

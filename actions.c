@@ -6,7 +6,7 @@
 /*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:54:59 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/14 19:28:13 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/21 17:21:23 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			mouse_move(int x, int y, t_win *win1)
 	}
 	else
 		return (0);
-	render(win1);
+	visual(win1);
 	return (0);
 }
 
@@ -84,7 +84,7 @@ int			mouse_press(int button, int x, int y, t_win *win1)
 	}
 	else
 		mouse_press2(button, x, y, win1);
-	render(win1);
+	visual(win1);
 	return (0);
 }
 
@@ -132,6 +132,6 @@ int			key_action(int keycode, t_win *win1)
 		transform(win1, &(win1->dir.x), &(win1->dir.y), 'R');
 		transform(win1, &(win1->plane.x), &(win1->plane.y), 'R');
 	}
-	render(win1);
+	visual(win1);
 	return (0);
 }

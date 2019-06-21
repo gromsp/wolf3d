@@ -54,12 +54,12 @@ static int	ft_roundl(double x, double istep)
 	// fflush(stdout);
 	if (y < 0)
 	{
-		printf("! OOB < 0 ");
+		// printf("! OOB < 0 ");
 		y = 0;
 	}
 	if (y > 23)
 	{
-		printf("! OOB > 23 ");
+		// printf("! OOB > 23 ");
 		y = 0;
 	}
 	// printf("%d ++++ ", y);
