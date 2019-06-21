@@ -2,18 +2,18 @@
 NAME=wolf3d
 
 CFLAGS=#-Wall -Wextra -Werror
-#FFLAGS= -framework OpenGL -framework AppKit
-FFLAGS= -lXext -lX11 -lm
+FFLAGS= -framework OpenGL -framework AppKit
+#FFLAGS= -lXext -lX11 -lm
 
 SRC_PATH=./src
 INC_PATH=./include
-MLX_PATH=./minilibx
-#MLX_PATH=./minilibx_macos
+#MLX_PATH=./minilibx
+MLX_PATH=./minilibx_macos
 MLX_INC_PATH=/usr/X11/include
 FT_PATH=./libft
 BIN_PATH=./bin
 
-SRC= wolf.c
+SRC= main.c parser.c init.c render.c hooks.c supp.c
 OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
 .PHONY: all clean fclean re
