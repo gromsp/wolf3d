@@ -10,8 +10,8 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-# define widht	512
-# define height	512
+# define widht	1300
+# define height	1300
 # define sizeb	32
 # define TEXSIZE 32
 
