@@ -6,7 +6,7 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/21 20:03:43 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/06/25 19:44:17 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,26 @@ static int		colors(t_win *cr, int i, double column)
 		return (cr->objcl);
 }
 
+int	floormap(double y, double distWall, t_win *cr)
+{
+	double distPlayer;
+	double currentDist;
+	int c;
+
+    currentDist = (double)WIN_HIGHT / (2.0 * (double)y - (double)WIN_HIGHT);
+	double weight = currentDist / distWall;
+
+    double currentFloorX = weight * cr->hitx + (1.0 - weight) * cr->player.x;
+    double currentFloorY = weight * cr->hity + (1.0 - weight) * cr->player.y;
+
+    int floorTexX, floorTexY;
+    floorTexX = (int)(currentFloorX * 32) % 32;
+    floorTexY = (int)(currentFloorY * 32) % 32;
+
+   c = cr->addrtext[32 * floorTexY + floorTexX];
+   return (c);
+}
+
 void	draw(t_win *cr, int ray)
 {
 	int i;
@@ -58,7 +78,7 @@ void	draw(t_win *cr, int ray)
 	double	beg;
 
 	i = 0;
-	column = WIN_HIGHT / cr->dist / 5;//Заменить на норм. расчет высоты столбцов
+	column = WIN_HIGHT / cr->dist;//Заменить на норм. расчет высоты столбцов
 	beg = (WIN_HIGHT - column) / 2;
 	// printf("%d    ", ray);
 	// fflush(stdout);
@@ -77,6 +97,8 @@ void	draw(t_win *cr, int ray)
 			if (cr->wall == 'w')
 				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
 		}
+		else if (i > beg + column)
+			cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
 		i++;
 	}
 }

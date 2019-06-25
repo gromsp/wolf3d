@@ -67,6 +67,98 @@ static int	ft_roundl(double x, double istep)
 	return (y);
 }
 
+void	dda2(t_win *cr)
+{
+    int mapX = (int)cr->player.x;
+    int mapY = (int)cr->player.y;
+
+    double sideDistX;
+    double sideDistY;
+
+    double deltaDistX = fabs(1.0 / cr->castx);
+    double deltaDistY = fabs(1.0 / cr->casty);
+
+    int stepX;
+    int stepY;
+
+    int hit = 0;
+    int side;
+	if (cr->castx < 0)
+	{
+		stepX= -1;
+		sideDistX = (cr->player.x - mapX) * deltaDistX;
+	}
+	else
+	{
+		stepX = 1;
+       	sideDistX = (mapX + 1.0 - cr->player.x) * deltaDistX;
+	}
+	if (cr->casty < 0)
+    {
+    	stepY = -1;
+		sideDistY = (cr->player.y - mapY) * deltaDistY;
+    }
+	else
+    {
+        stepY = 1;
+        sideDistY = (mapY + 1.0 - cr->player.y) * deltaDistY;
+    }
+    while (hit == 0 && (mapX < cr->x_len && mapY <= cr->y_len))
+    {
+    	if (sideDistX < sideDistY)
+        {
+          sideDistX += deltaDistX;
+          mapX += stepX;
+          side = 0;
+        }
+        else
+        {
+          sideDistY += deltaDistY;
+          mapY += stepY;
+          side = 1;
+        }
+        if (cr->tiles[mapY][mapX] > 0 || (mapX > cr->x_len || mapY > cr->y_len))
+					hit = 1;
+    }
+	if (side == 0)
+		cr->dist = (mapX - cr->player.x + (1 - stepX) / 2) / cr->castx;
+    else
+		cr->dist = (mapY - cr->player.y + (1 - stepY) / 2) / cr->casty;
+	double wallX; //where exactly the wall was hit
+  if (side == 0) wallX = cr->player.y + cr->dist * cr->casty;
+  else           wallX = cr->player.x + cr->dist * cr->castx;
+	double floorXWall, floorYWall; //x, y position of the floor texel at the bottom of the wall
+	if(side == 0 && cr->castx > 0)
+      {
+        cr->hitx = mapX;
+        cr->hity = mapY + wallX;
+      }
+      else if(side == 0 && cr->castx < 0)
+      {
+        cr->hitx = mapX + 1.0;
+        cr->hity = mapY + wallX;
+      }
+      else if(side == 1 && cr->casty > 0)
+      {
+        cr->hitx = mapX + wallX;
+        cr->hity = mapY;
+      }
+      else
+      {
+        cr->hitx = mapX + wallX;
+        cr->hity = mapY + 1.0;
+      }
+	if (cr->hitx > cr->x_len)
+		cr->hitx = cr->x_len - 1;
+	if (cr->hity > cr->y_len)
+		cr->hity = cr->y_len - 1;
+	if (cr->hitx < 1)
+		cr->hitx = 1;
+	if (cr->hity < 1)
+		cr->hity = 1;
+	printf("x - %f, y - %f\n", cr->hitx, cr->hity);
+}
+
 void	dda(t_win *cr)
 {
 	t_obj	inext;
@@ -106,6 +198,7 @@ void	dda(t_win *cr)
 			// img_pxl(cr, px * cr->vs->gridsize + cr->vs->x_offset, py * cr->vs->gridsize + cr->vs->y_offset, 0x0000ff);//Для минимапы
 			cr->hitx = px;
 			cr->hity = py;
+            printf("x - %f, y - %f\n", cr->hitx, cr->hity);
 			return ;
 		}
 		// mapValue = cr->tiles[(int)ceil(py + 0.01 * istep.y)][(int)ceil(px + 0.01 * istep.x)];
