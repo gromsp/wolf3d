@@ -13,7 +13,6 @@
 
 #include "wolf.h"
 #include <stdio.h>
-#include "mlx.h"
 
 
 static int		colors(t_win *cr, int i, double column)
