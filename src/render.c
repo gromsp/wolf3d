@@ -46,7 +46,7 @@ static int		colors(t_win *cr, int i, double column)
 	t = i * ty;
 	// if (cr->rcurr == 1)
 	// 	cr->objcl = 0x0000ff;
-	c = cr->addrtext[tx + (t * TEXSIZE)];
+	// c = cr->addrtext[tx + (t * TEXSIZE)];
 		// return (c);
 		return (cr->objcl);
 }
@@ -97,8 +97,8 @@ void	draw(t_win *cr, int ray)
 			if (cr->wall == 'w')
 				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
 		}
-		else if (i > beg + column)
-			cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
+		// else if (i > beg + column)
+		// 	cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
 		i++;
 	}
 }

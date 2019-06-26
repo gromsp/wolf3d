@@ -125,8 +125,10 @@ void	dda2(t_win *cr)
     else
 		cr->dist = (mapY - cr->player.y + (1 - stepY) / 2) / cr->casty;
 	double wallX; //where exactly the wall was hit
-  if (side == 0) wallX = cr->player.y + cr->dist * cr->casty;
-  else           wallX = cr->player.x + cr->dist * cr->castx;
+  if (side == 0) 
+  	wallX = sqrt((cr->dist * cr->dist) - ((mapY - cr->player.y) * (mapY - cr->player.y)));
+  else
+  	wallX = sqrt((cr->dist * cr->dist) - ((mapX - cr->player.x) * (mapX - cr->player.x)));;
 	double floorXWall, floorYWall; //x, y position of the floor texel at the bottom of the wall
 	if(side == 0 && cr->castx > 0)
       {
@@ -148,14 +150,14 @@ void	dda2(t_win *cr)
         cr->hitx = mapX + wallX;
         cr->hity = mapY + 1.0;
       }
-	if (cr->hitx > cr->x_len)
-		cr->hitx = cr->x_len - 1;
-	if (cr->hity > cr->y_len)
-		cr->hity = cr->y_len - 1;
-	if (cr->hitx < 1)
-		cr->hitx = 1;
-	if (cr->hity < 1)
-		cr->hity = 1;
+	// if (cr->hitx > cr->x_len)
+	// 	cr->hitx = cr->x_len - 1;
+	// if (cr->hity > cr->y_len)
+	// 	cr->hity = cr->y_len - 1;
+	// if (cr->hitx < 1)
+	// 	cr->hitx = 1;
+	// if (cr->hity < 1)
+	// 	cr->hity = 1;
 	printf("x - %f, y - %f\n", cr->hitx, cr->hity);
 }
 

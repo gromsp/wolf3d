@@ -60,9 +60,9 @@ int		init(char *argv, t_win *cr)
 	//
 	x = TEXSIZE;
 	y = TEXSIZE;
-	cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
+	// cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
 	// printf("%d, %d  ===  ", x, y);
-	cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
+	// cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
 	//
 	get_map(fd0, fd, cr);
 	return (0);
