@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wolf.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:16 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 20:55:07 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/24 18:19:09 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define WOLF_H
 # include "../libft/includes/libft.h"
 # include "../libft/includes/get_next_line.h"
+# include "../minilibx_macos/mlx.h"
 
 typedef struct		s_visual//Для миникарты
 {
@@ -99,6 +100,7 @@ int					mouse_release(int button, int x, int y, t_win *cr);
 int					mouse_move(int x, int y, t_win *cr);
 void				make_cast(t_win *cr);
 void				bresenham(t_win *cr);
+void				dda2(t_win *cr);
 void				dda(t_win *cr);
 void				bresenham(t_win *cr);
 int					wall_check(t_win *cr, double x, double y);

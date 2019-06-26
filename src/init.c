@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 21:19:51 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/06/25 20:10:44 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -30,11 +29,11 @@ int		hooks(t_win *cr)
 
 void		vector_init(t_win *cr)
 {
-	cr->player.x = 6.1; //Добавить функцию поиска свободной клетки
+	cr->player.x = 6.5; //Добавить функцию поиска свободной клетки
 	cr->player.y = 3.5; //для помещения туда игрока
-	cr->dir.x = 0;
-	cr->dir.y = 10;
-	cr->plane.x = 5;
+	cr->dir.x = 0.0;
+	cr->dir.y = 1.0;
+	cr->plane.x = 0.5;
 	cr->plane.y = 0;
 	cr->dir.len = cr->dir.x > cr->dir.y ? cr->dir.x : cr->dir.y;
 	cr->plane.len = cr->plane.x > cr->plane.y ? cr->plane.x : cr->plane.y;
@@ -60,9 +59,9 @@ int		init(char *argv, t_win *cr)
 	//
 	x = TEXSIZE;
 	y = TEXSIZE;
-	cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
+	// cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
 	// printf("%d, %d  ===  ", x, y);
-	cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
+	// cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
 	//
 	get_map(fd0, fd, cr);
 	return (0);
