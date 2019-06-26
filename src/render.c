@@ -86,7 +86,7 @@ void	draw(t_win *cr, int ray)
 	{
 		if ((i > beg) && (i < WIN_HIGHT - beg) && i > 0)
 		{
-			cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
+			// cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
 			// cr->wall = 's';
 			if (cr->wall == 'e')
 				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);

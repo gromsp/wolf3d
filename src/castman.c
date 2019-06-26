@@ -134,21 +134,25 @@ void	dda2(t_win *cr)
       {
         cr->hitx = mapX;
         cr->hity = wallX;
+		cr->wall = 'w';
       }
       else if(side == 0 && cr->castx < 0)
       {
         cr->hitx = mapX + 1.0;
         cr->hity = wallX;
+		cr->wall = 'e';
       }
       else if(side == 1 && cr->casty > 0)
       {
         cr->hitx = wallX;
         cr->hity = mapY;
+		cr->wall = 'n';
       }
       else
       {
         cr->hitx = wallX;
         cr->hity = mapY + 1.0;
+		cr->wall = 's';
       }
 	if (cr->hitx > cr->x_len)
 		cr->hitx = cr->x_len - 1;
