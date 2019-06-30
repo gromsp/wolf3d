@@ -41,5 +41,5 @@ void	make_cast(t_win *cr)
 // {
 // 	int	res;
 //
-// 	return (0);
+// 	return (0);11
 // }

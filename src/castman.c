@@ -63,7 +63,7 @@ static int	ft_roundl(double x, double istep)
 		y = 0;
 	}
 	// printf("%d ++++ ", y);
-	// fflush(stdout);
+	// fflush(stdout);11
 	return (y);
 }
 

@@ -19,7 +19,7 @@
 # define WIN_WIDTH 512
 # define WIN_HIGHT 512
 
-typedef struct		s_visual//Для миникарты
+typedef struct		s_visual//Для миникарты1
 {
 	int				x_i;
 	int				y_i;
