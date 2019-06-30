@@ -35,6 +35,7 @@ void	make_cast(t_win *cr)
 		draw(cr, WIN_WIDTH - cr->rcurr);
 		cr->rcurr++;
 	}
+	sprite(cr);
 }
 
 // int		wall_check(t_win *cr, double x, double y)

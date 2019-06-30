@@ -15,6 +15,9 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/get_next_line.h"
 
+# define WIN_WIDTH 512
+# define WIN_HIGHT 512
+
 typedef struct		s_visual//Для миникарты
 {
 	int				x_i;
@@ -36,6 +39,13 @@ typedef struct		s_obj
 	double			dy;
 	double			len;
 }					t_obj;
+
+typedef struct		s_spr
+{
+	double			x;
+	double			y;
+	int				tex;
+}					t_spr;
 
 typedef struct		s_win
 {
@@ -76,10 +86,9 @@ typedef struct		s_win
 	//
 	double		x_mem;//Это все для управления мышью
 	//
+	double		mdist[WIN_WIDTH];
 }					t_win;
 
-# define WIN_WIDTH 1300
-# define WIN_HIGHT 1300
 # define ROTATION -0.1
 # define SPEED 0.3
 # define MAX_DIST 35
@@ -100,6 +109,7 @@ int					mouse_move(int x, int y, t_win *cr);
 void				make_cast(t_win *cr);
 void				bresenham(t_win *cr);
 void				dda2(t_win *cr);
+void				sprite(t_win *cr);
 void				dda(t_win *cr);
 void				bresenham(t_win *cr);
 int					wall_check(t_win *cr, double x, double y);

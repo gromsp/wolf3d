@@ -67,6 +67,31 @@ static int	ft_roundl(double x, double istep)
 	return (y);
 }
 
+void	renderspr(t_win *cr, int ray, int spriteH)
+{
+	int i;
+	double	column;
+	double	beg;
+
+	i = 0;
+	column = spriteH;//Заменить на норм. расчет высоты столбцов
+	beg = (WIN_HIGHT - column) / 2;
+	// printf("%d    ", ray);
+	// fflush(stdout);
+	while (i < WIN_HIGHT)
+	{
+		if ((i > beg) && (i < WIN_HIGHT - beg) && i > 0)
+		{
+			// cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
+			// cr->wall = 's';
+			cr->addr[ray + (i * WIN_WIDTH)] = 0xaa11aa;
+		}
+		// else if (i > beg + column)
+		// 	cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
+		i++;
+	}
+}
+
 void	dda2(t_win *cr)
 {
     int mapX = (int)cr->player.x;
@@ -124,6 +149,8 @@ void	dda2(t_win *cr)
 		cr->dist = (mapX - cr->player.x + (1 - stepX) / 2) / cr->castx;
     else
 		cr->dist = (mapY - cr->player.y + (1 - stepY) / 2) / cr->casty;
+
+	cr->mdist[cr->rcurr] = cr->dist;
 	double wallX; //where exactly the wall was hit
   if (side == 0) 
   	wallX = cr->player.y + cr->dist * cr->casty;
@@ -163,6 +190,58 @@ void	dda2(t_win *cr)
 	if (cr->hity < 1)
 		cr->hity = 1;
 	printf("x - %f, y - %f\n", cr->hitx, cr->hity);
+}
+
+void	sprite(t_win *cr)
+{
+	t_spr *spr;
+
+	spr = malloc(sizeof(t_spr));
+	spr->x = 6.5;
+	spr->y = 5.5;
+	spr->tex = 2;
+	int	sprOrder[1];
+	double	sprdist[1];
+	int i;
+	i = 0;
+	while(i < 1)
+	{
+		sprOrder[i] = i;
+		sprdist[i++] = ((cr->player.x - spr->x) * (cr->player.x - spr->x) + (cr->player.y - spr->y) * (cr->player.y - spr->y));
+	}
+	// sortirovka po distancii
+	i = 0;
+	while(i < 1)
+	{
+		double	sprX = spr->x - cr->player.x;
+		double	sprY = spr->y - cr->player.y;
+
+		double invDet = 1.0 / (cr->plane.x * cr->dir.y - cr->dir.x * cr->plane.y);
+
+		double	transX = invDet * (cr->dir.y * sprX - cr->dir.x * sprY);
+		double	transY = invDet * (-cr->plane.y * sprX + cr->plane.x * sprY);
+
+		int sprscrX = (int)((WIN_WIDTH / 2) * (1 + transX / transY));
+		int uDiv = 1;
+		int vDiv = 1;
+		double vMove = 0.0;
+		int vMovescr = (int)(vMove / transY);
+		int spriteH = abs((int)(WIN_HIGHT / transY)) / vDiv;
+		int spriteW = abs((int)(WIN_HIGHT / transY)) / uDiv;
+		int startspr = -spriteW /2 + sprscrX;
+		if (startspr < 0)
+			startspr = 0;
+		int	endspr = spriteW / 2 + sprscrX;
+		if (endspr >= WIN_WIDTH)
+			endspr = WIN_WIDTH - 1;
+		int stripe = startspr;
+		while(stripe < endspr)
+		{
+			renderspr(cr, stripe, spriteH);
+			stripe++;
+		}
+		i++;
+	}
 }
 
 void	dda(t_win *cr)
