@@ -237,7 +237,8 @@ void	sprite(t_win *cr)
 		int stripe = startspr;
 		while(stripe < endspr)
 		{
-			renderspr(cr, stripe, spriteH);
+			if(transY > 0 && stripe > 0 && stripe < WIN_WIDTH && transY < cr->mdist[stripe])
+				renderspr(cr, WIN_WIDTH - stripe, spriteH);
 			stripe++;
 		}
 		i++;
