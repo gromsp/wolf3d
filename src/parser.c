@@ -31,7 +31,7 @@ static void		map_line(char *line, int j, t_win *cr)
 	ft_arrfree(&arr, cr->x_len);
 }
 
-void			get_map(int fd0, int fd, t_win *cr)
+void			get_map(int fd0, int fd, t_win *cr, char *argv)
 {
 	char		*line;
 	int			yc;
@@ -50,6 +50,8 @@ void			get_map(int fd0, int fd, t_win *cr)
 	// cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len + 1);//+1 ??????
 	while (get_next_line(fd0, &line) == 1)
 	{
+		if (line[0] == 0 || line[0] == '\n')
+			break;
 		yc++;
 		free(line);
 	}
@@ -58,6 +60,8 @@ void			get_map(int fd0, int fd, t_win *cr)
 	yc = 0;
 	while (get_next_line(fd, &line) == 1)
 	{
+		if (line[0] == 0 || line[0] == '\n')
+			break;
 		if (!((cr->tiles)[yc] = (int *)malloc(sizeof(int) * cr->x_len)))
 			err_ex(0);
 		map_line(line, yc, cr);
@@ -65,6 +69,7 @@ void			get_map(int fd0, int fd, t_win *cr)
 		free(line);
 	}
 	close(fd0);
+	get_obj(cr, argv);
 	vector_init(cr);
 	img_new(cr);
 	visual(cr);

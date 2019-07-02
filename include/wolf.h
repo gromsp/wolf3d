@@ -88,6 +88,7 @@ typedef struct		s_win
 	double		x_mem;//Это все для управления мышью
 	//
 	double		mdist[WIN_WIDTH];
+	t_spr		*sprite;
 }					t_win;
 
 # define ROTATION -0.1
@@ -98,8 +99,9 @@ typedef struct		s_win
 
 int					init(char *argv, t_win *cr);
 int					hooks(t_win *cr);
-void				get_map(int fd0, int fd, t_win *cr);
+void				get_map(int fd0, int fd, t_win *cr, char *argv);
 void				visual(t_win *cr);
+void				get_obj(t_win *cr, char *argv);
 void				img_new(t_win *cr);
 void				img_pxl(t_win *cr, int x, int y, int color);
 int					key_action(int keycode, t_win *cr);
