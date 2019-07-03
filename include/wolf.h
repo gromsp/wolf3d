@@ -89,6 +89,7 @@ typedef struct		s_win
 	//
 	double		mdist[WIN_WIDTH];
 	t_spr		*sprite;
+	int			cspr;//lo;ichestvo spraitov
 }					t_win;
 
 # define ROTATION -0.1

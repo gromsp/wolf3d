@@ -66,6 +66,20 @@ double	ft_atod(char *l)
 	return(r);
 }
 
+int		checkd(char *l, int i)
+{
+	int j;
+
+	j = 0;
+	while (l[i] && l[i] != ',')
+	{
+		if (l[i] == '.')
+			j = 1;
+		i++;
+	}
+	return (j);
+}
+
 void	writemass(t_spr *spr, char *l)
 {
 	int i;
@@ -74,12 +88,18 @@ void	writemass(t_spr *spr, char *l)
 
 	i = 0;
 	j = 0;
-	spr->x = ft_atod(l + 2);
+	if (checkd(l, i) == 1)
+		spr->x = ft_atod(l + 2);
+	else
+		spr->x = ft_atoi(l + 5);
 	while (l[i])
 	{
 		if (l[i] == ',' && j == 0)
 		{
-			spr->y = ft_atod(l + i + 2);
+			if (checkd(l, i + 2) == 1)
+				spr->y = ft_atod(l + i + 2);
+			else
+				spr->y = ft_atoi(l + i + 2);
 			j++;
 			i++;
 		}
@@ -105,14 +125,15 @@ void	write_obj(t_win *cr, int fd, int count)
 		// 	break;
 		if (i == 1)
 		{
-			writemass(&spr[j], line);
-			j++;
+			writemass(&cr->sprite[j], line);
+ 			j++;
 		}
 		if (ft_strcmp("obj:", line) == 0)
 			i = 1;
 		free(line);
 	}
-	cr->sprite = spr;
+	cr->cspr = count;
+	// cr->sprite = spr;
 }
 
 void	get_obj(t_win *cr, char *argv)

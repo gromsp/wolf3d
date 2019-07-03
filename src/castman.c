@@ -84,7 +84,7 @@ void	renderspr(t_win *cr, int ray, int spriteH)
 		{
 			// cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
 			// cr->wall = 's';
-			cr->addr[ray + (i * WIN_WIDTH)] = 0xaa11aa;
+			cr->addr[ray + (i * WIN_WIDTH)] = 0xaa11aa + 1000 * spriteH;
 		}
 		// else if (i > beg + column)
 		// 	cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
@@ -192,29 +192,62 @@ void	dda2(t_win *cr)
 	printf("x - %f, y - %f\n", cr->hitx, cr->hity);
 }
 
+void ft_swap(double *a, double *b)
+{
+	double tmp_a;
+
+	tmp_a = *a;
+	*a = *b;
+	*b = tmp_a;
+}
+
+void	sortspr(int *order, double *dist, int amount)
+{
+  int gap = amount;
+  int swapped = 0;
+  int i;
+  while(gap > 1 || swapped)
+  {
+    //shrink factor 1.3
+    gap = (gap * 10) / 13;
+    if(gap == 9 || gap == 10) 
+		gap = 11;
+    if (gap < 1) 
+		gap = 1;
+    swapped = 0;
+	i = 0;
+	while (i < amount - gap)
+    {
+      int j = i + gap;
+      if(dist[i] < dist[j])
+      {
+        ft_swap(&dist[i], &dist[j]);
+        ft_swap(&order[i], &order[j]);
+        swapped = 1;
+      }
+	  i++;
+    }
+  }
+}
+
 void	sprite(t_win *cr)
 {
-	t_spr *spr;
-
-	spr = malloc(sizeof(t_spr));
-	spr->x = 6.5;
-	spr->y = 5.5;
-	spr->tex = 2;
-	int	sprOrder[1];
-	double	sprdist[1];
+	int	sprOrder[cr->cspr];
+	double	sprdist[cr->cspr];
 	int i;
 	i = 0;
-	while(i < 1)
+	while(i < cr->cspr)
 	{
 		sprOrder[i] = i;
-		sprdist[i++] = ((cr->player.x - spr->x) * (cr->player.x - spr->x) + (cr->player.y - spr->y) * (cr->player.y - spr->y));
+		sprdist[i] = ((cr->player.x - cr->sprite[i].x) * (cr->player.x - cr->sprite[i].x) + (cr->player.y - cr->sprite[i].y) * (cr->player.y - cr->sprite[i].y));
+		i++;
 	}
-	// sortirovka po distancii
+	sortspr(sprOrder, sprdist, cr->cspr);
 	i = 0;
-	while(i < 1)
+	while(i < cr->cspr)
 	{
-		double	sprX = spr->x - cr->player.x;
-		double	sprY = spr->y - cr->player.y;
+		double	sprX = cr->sprite[i].x - cr->player.x;
+		double	sprY = cr->sprite[i].y - cr->player.y;
 
 		double invDet = 1.0 / (cr->plane.x * cr->dir.y - cr->dir.x * cr->plane.y);
 
