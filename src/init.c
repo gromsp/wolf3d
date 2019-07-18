@@ -3,47 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/25 20:10:44 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/07/14 18:41:43 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "wolf.h"
 
-int		hooks(t_win *cr)
+void		vector_init(t_core *cr)
 {
-	visual(cr);
-	//
-	// mlx_hook(cr->win, 4, 1, mouse_press, cr);
-	// mlx_hook(cr->win, 5, 1, mouse_release, cr);
-	// mlx_hook(cr->win, 6, 1, mouse_move, cr);
-	mlx_hook(cr->win, 2, 1, key_action, cr);
-	mlx_loop(cr->mlx);
-	return (0);
-}
-
-void		vector_init(t_win *cr)
-{
-	cr->player.x = 6.5; //Добавить функцию поиска свободной клетки
-	cr->player.y = 3.5; //для помещения туда игрока
+	cr->player.x = PLAYER_START_X;
+	cr->player.y = PLAYER_START_Y;
 	cr->dir.x = 0.0;
 	cr->dir.y = 1.0;
 	cr->plane.x = 0.5;
 	cr->plane.y = 0;
-	cr->dir.len = cr->dir.x > cr->dir.y ? cr->dir.x : cr->dir.y;
-	cr->plane.len = cr->plane.x > cr->plane.y ? cr->plane.x : cr->plane.y;
+	cr->dir.len = sqrt(pow(cr->dir.x, 2) + pow(cr->dir.y, 2));
+	cr->plane.len = sqrt(pow(cr->plane.x, 2) + pow(cr->plane.y, 2));
 }
 
-int		init(char *argv, t_win *cr)
+static void	tex_init(t_core *cr)
 {
-	int			fd0;
-	int			fd;
-	//
+	int	x;
+	int	y;
+	int	i;
+
+	i = 1;
+	if (!(cr->textures = (int **)malloc(sizeof(int *) * TEXNUM)))
+		err_ex(0);
+	if (!(cr->textrash = (int **)malloc(sizeof(int *) * TEXNUM)))
+		err_ex(0);
+	while (i <= TEXNUM)
+	{
+		cr->textrash[i] = mlx_xpm_file_to_image(cr->mlx, \
+			ft_strjoin(ft_strjoin("./textures/texture", \
+			ft_itoa(i)), ".xpm"), &x, &y);
+		cr->textures[i] = (int *)mlx_get_data_addr(cr->textrash[i], \
+			&cr->bpp, &(cr->linesize), &(cr->endian));
+		i++;
+	}
+}
+
+void		init(char *argv, t_core *cr)
+{
+	int		fd0;
+	int		fd;
 	int		x;
 	int		y;
 
@@ -53,16 +63,18 @@ int		init(char *argv, t_win *cr)
 		err_ex(0);
 	if (!(cr->win = mlx_new_window(cr->mlx, WIN_WIDTH, WIN_HIGHT, "Wolf3d")))
 		err_ex(0);
-	if (!(cr->vs = (t_visual *)malloc(sizeof(t_visual))))
+	if (!(cr->vs = (t_minimap *)malloc(sizeof(t_minimap))))
 		err_ex(0);
 	cr->rotation = ROTATION;
-	//
+	if (!(cr->objarr = (t_obj *)malloc(sizeof(t_obj) * SPRITESNUM)))
+		err_ex(0);
+	cr->spritesnum = SPRITESNUM;
 	x = TEXSIZE;
 	y = TEXSIZE;
-	// cr->text = mlx_xpm_file_to_image(cr->mlx, "src/stone.xpm", &x, &y);
-	// printf("%d, %d  ===  ", x, y);
-	// cr->addrtext = (int *)mlx_get_data_addr(cr->text, &cr->bpp, &(cr->linesize), &(cr->endian));
-	//
+	tex_init(cr);
 	get_map(fd0, fd, cr);
-	return (0);
+	vector_init(cr);
+	minimap_init(cr);
+	img_new(cr);
+	visual(cr);
 }

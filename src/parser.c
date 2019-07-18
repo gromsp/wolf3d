@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
+/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:10 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 20:38:32 by jsteuber         ###   ########.fr       */
+/*   Updated: 2019/07/14 13:55:00 by adoyle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void		map_line(char *line, int j, t_win *cr)
+static void		map_line(char *line, int j, t_core *cr)
 {
 	char			**arr;
 	int				i;
@@ -22,51 +22,60 @@ static void		map_line(char *line, int j, t_win *cr)
 
 	i = 0;
 	arr = ft_strsplit(line, ' ');
-	line_len_ct = cr->x_len;
+	line_len_ct = cr->map_w;
 	while (line_len_ct--)
 	{
-		cr->tiles[j][cr->x_len - line_len_ct - 1] = ft_atoi(arr[i]);
+		cr->tiles[j][cr->map_w - line_len_ct - 1] = ft_atoi(arr[i]);
 		i++;
 	}
-	ft_arrfree(&arr, cr->x_len);
+	ft_arrfree(&arr, cr->map_w);
 }
 
-void			get_map(int fd0, int fd, t_win *cr)
+void			get_mappart(t_core *cr, int fd, char *line, int yc)
+{
+	cr->map_h = yc;
+	if (!(cr->tiles = (int **)malloc(sizeof(int *) * cr->map_h)))
+		err_ex(0);
+	yc = 0;
+	while (get_next_line(fd, &line) == 1)
+	{
+		if (line[0] == 0 || line[0] == '\n')
+		{
+			free(line);
+			break ;
+		}
+		if (!((cr->tiles)[yc] = (int *)malloc(sizeof(int) * cr->map_w)))
+			err_ex(0);
+		map_line(line, yc, cr);
+		yc++;
+		free(line);
+	}
+}
+
+void			get_map(int fd0, int fd, t_core *cr)
 {
 	char		*line;
 	int			yc;
 
 	yc = 0;
 	if (get_next_line(fd0, &line) == 1)
-	{
 		yc++;
-	}
 	else
 		err_ex(2);
-	cr->x_len = ft_ctwords(line, ' ');
+	cr->map_w = ft_ctwords(line, ' ');
 	free(line);
 	img_new(cr);
-	// cr->y_len = yc;
-	// cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len + 1);//+1 ??????
 	while (get_next_line(fd0, &line) == 1)
 	{
-		yc++;
-		free(line);
-	}
-	cr->y_len = yc;
-	cr->tiles = (int **)malloc(sizeof(int *) * cr->y_len);
-	yc = 0;
-	while (get_next_line(fd, &line) == 1)
-	{
-		if (!((cr->tiles)[yc] = (int *)malloc(sizeof(int) * cr->x_len)))
-			err_ex(0);
-		map_line(line, yc, cr);
+		if (line[0] == 0 || line[0] == '\n')
+		{
+			free(line);
+			break ;
+		}
 		yc++;
 		free(line);
 	}
 	close(fd0);
-	vector_init(cr);
-	img_new(cr);
-	visual(cr);
+	get_mappart(cr, fd, line, yc);
 	close(fd);
 }

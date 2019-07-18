@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/06 15:55:20 by jsteuber          #+#    #+#             */
-/*   Updated: 2019/06/21 20:03:23 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/07/14 17:52:20 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <fcntl.h>
 #include <stdlib.h>
 #include "wolf.h"
+#include <time.h>
+#include <stdio.h>
 
 void	err_ex(int pr)
 {
@@ -22,16 +24,30 @@ void	err_ex(int pr)
 		ft_putstr("Error: invalid map\n");
 	if (pr == 2)
 		ft_putstr("Error: can't read from file\n");
+	if (pr == 3)
+		ft_putstr("Usage: ./wolf3d map_name\n");
 	exit(1);
+}
+
+int		hooks(t_core *cr)
+{
+	visual(cr);
+	mlx_hook(cr->win, 2, 1, key_action, cr);
+	mlx_hook(cr->win, 17, 1, red_button, cr);
+	mlx_loop(cr->mlx);
+	return (0);
 }
 
 int		main(int argc, char **argv)
 {
-	t_win		*cr;
+	t_core		*cr;
 
-	if (!(cr = (t_win *)malloc(sizeof(t_win))))
+	if (argc != 2)
+		err_ex(3);
+	if (!(cr = (t_core *)malloc(sizeof(t_core))))
 		err_ex(0);
 	init(argv[1], cr);
+	get_obj(cr, argv[1]);
 	hooks(cr);
 	(void)argc;
 	return (0);

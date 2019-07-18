@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+         #
+#    By: jsteuber <jsteuber@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/06 15:55:47 by jsteuber          #+#    #+#              #
-#    Updated: 2019/06/21 19:59:32 by adoyle           ###   ########.fr        #
+#    Updated: 2019/07/14 19:44:34 by jsteuber         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,9 @@ FT_PATH=./libft
 BIN_PATH=./bin
 
 SRC= main.c parser.c actions.c visual.c \
-image.c color.c render.c supp.c \
-raycast.c castman.c matrix.c init.c minimap.c
+image.c render.c raycast.c algos.c \
+matrix.c init.c minimap.c minimap2.c objects.c objects2.c \
+obj_parser.c rendertwo.c algostwo.c
 OBJ:= $(addprefix $(BIN_PATH)/,$(SRC:.c=.o))
 
 .PHONY: all clean fclean re

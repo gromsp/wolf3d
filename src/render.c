@@ -6,34 +6,21 @@
 /*   By: adoyle <adoyle@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/06/08 19:12:24 by adoyle            #+#    #+#             */
-/*   Updated: 2019/06/25 19:44:17 by adoyle           ###   ########.fr       */
+/*   Updated: 2019/07/14 19:33:26 by jsteuber         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "wolf.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-
-static int		colors(t_win *cr, int i, double column)
+int		colors(t_core *cr, int i, double column)
 {
-	int tx;
+	int		tx;
 	double	ty;
 	double	x;
-	int t;
-	int c;
-
-
-	if (cr->wall == 'n')
-		cr->objcl = 0xff0000;
-	else if (cr->wall == 's')
-		cr->objcl = 0x00ff00;
-	else if (cr->wall == 'w')
-		cr->objcl = 0x0000ff;
-	else if (cr->wall == 'e')
-		cr->objcl = 0xffffff;
-	else if (cr->wall == ' ')
-		cr->objcl = 0x000000;
+	int		t;
+	int		c;
 
 	if (cr->wall == 'n' || cr->wall == 's')
 		x = cr->hitx;
@@ -41,63 +28,82 @@ static int		colors(t_win *cr, int i, double column)
 		x = cr->hity;
 	tx = (x - (int)x) * TEXSIZE;
 	ty = (double)TEXSIZE / column;
-	// printf("%d %d | ", cr->hitx, cr->hity);
 	t = i * ty;
-	// if (cr->rcurr == 1)
-	// 	cr->objcl = 0x0000ff;
-	// c = cr->addrtext[tx + (t * TEXSIZE)];
-		// return (c);
-		return (cr->objcl);
+	if (cr->dist > VIEWDIST)
+		c = getgrad(cr->textures[cr->wtexnum][tx + (t * TEXSIZE)],
+		0, 1 - 1 / (cr->dist + 1 - VIEWDIST));
+	else
+		c = cr->textures[cr->wtexnum][tx + (t * TEXSIZE)];
+	return (c);
 }
 
-int	floormap(double y, double distWall, t_win *cr)
+int		floormap(double y, double dist, t_core *cr)
 {
-	double distPlayer;
-	double currentDist;
-	int c;
+	t_flc ceil;
 
-    currentDist = (double)WIN_HIGHT / (2.0 * (double)y - (double)WIN_HIGHT);
-	double weight = currentDist / distWall;
-
-    double currentFloorX = weight * cr->hitx + (1.0 - weight) * cr->player.x;
-    double currentFloorY = weight * cr->hity + (1.0 - weight) * cr->player.y;
-
-    int floorTexX, floorTexY;
-    floorTexX = (int)(currentFloorX * 32) % 32;
-    floorTexY = (int)(currentFloorY * 32) % 32;
-
-   c = cr->addrtext[32 * floorTexY + floorTexX];
-   return (c);
+	ceil.c_dist = (double)WIN_WIDTH / (2.0 * (double)y - (double)WIN_HIGHT);
+	ceil.wght = ceil.c_dist / dist;
+	ceil.c_flrx = ceil.wght * cr->hitx + (1.0 - ceil.wght) * cr->player.x;
+	ceil.c_flry = ceil.wght * cr->hity + (1.0 - ceil.wght) * cr->player.y;
+	ceil.flrtx = (int)(ceil.c_flrx * TEXSIZE) % TEXSIZE;
+	ceil.flrty = (int)(ceil.c_flry * TEXSIZE) % TEXSIZE;
+	if (ceil.c_dist > VIEWDIST)
+		ceil.c = getgrad(cr->textures[FLOORTEX][TEXSIZE *
+		ceil.flrtx + ceil.flrty], 0, 1 - 1 / (ceil.c_dist + 1 - VIEWDIST));
+	else
+		ceil.c = cr->textures[FLOORTEX][TEXSIZE *
+		ceil.flrtx + ceil.flrty];
+	return (ceil.c);
 }
 
-void	draw(t_win *cr, int ray)
+int		seil(double y, double dist, t_core *cr)
 {
-	int i;
+	t_flc ceil;
+
+	ceil.c_dist = (double)WIN_WIDTH / (2.0 * (double)y - (double)WIN_HIGHT);
+	ceil.wght = ceil.c_dist / dist;
+	ceil.c_flrx = ceil.wght * cr->hitx + (1.0 - ceil.wght) * cr->player.x;
+	ceil.c_flry = ceil.wght * cr->hity + (1.0 - ceil.wght) * cr->player.y;
+	ceil.flrtx = (int)(ceil.c_flrx * TEXSIZE) % TEXSIZE;
+	ceil.flrty = (int)(ceil.c_flry * TEXSIZE) % TEXSIZE;
+	if (ceil.c_dist > VIEWDIST)
+		ceil.c = getgrad(cr->textures[CEILTEX][TEXSIZE *
+		ceil.flrtx + ceil.flrty], 0, 1 - 1 / (ceil.c_dist + 1 - VIEWDIST));
+	else
+		ceil.c = cr->textures[CEILTEX][TEXSIZE *
+		ceil.flrtx + ceil.flrty];
+	return (ceil.c);
+}
+
+void	draw_gui(t_core *cr)
+{
+	char	*string;
+	char	*itoa;
+
+	itoa = ft_itoa(cr->coins);
+	string = ft_strjoin("COINS ", itoa);
+	free(itoa);
+	mlx_string_put(cr->mlx, cr->win, WIN_WIDTH * 0.08, \
+		WIN_HIGHT * 0.91, 0xffffff, string);
+	free(string);
+}
+
+void	draw(t_core *cr, int ray)
+{
+	int		i;
 	double	column;
 	double	beg;
 
-	i = 0;
-	column = WIN_HIGHT / cr->dist;//Заменить на норм. расчет высоты столбцов
+	i = -1;
+	column = WIN_WIDTH / cr->dist;
 	beg = (WIN_HIGHT - column) / 2;
-	// printf("%d    ", ray);
-	// fflush(stdout);
-	while (i < WIN_HIGHT)
+	while (++i < WIN_HIGHT)
 	{
-		if ((i > beg) && (i < WIN_HIGHT - beg) && i > 0)
-		{
-			// cr->wall = checker(cr, cr->hitx, cr->hity, cr->tiles);
-			// cr->wall = 's';
-			if (cr->wall == 'e')
-				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
-			if (cr->wall == 'n')
-				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
-			if (cr->wall == 's')
-				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
-			if (cr->wall == 'w')
-				cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
-		}
-		// else if (i > beg + column)
-		// 	cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);		
-		i++;
+		if ((i > beg) && (i < WIN_HIGHT - beg) && i >= 0 && cr->dodraw == 1)
+			cr->addr[ray + (i * WIN_WIDTH)] = colors(cr, i - beg, column);
+		else if (i > beg + column)
+			cr->addr[ray + (i * WIN_WIDTH)] = floormap(i, cr->dist, cr);
+		else if (i < beg)
+			cr->addr[ray + (i * WIN_WIDTH)] = seil(WIN_HIGHT - i, cr->dist, cr);
 	}
 }
